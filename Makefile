@@ -23,8 +23,8 @@ OBJ_DIR = objs
 OBJ_SUBDIR = $(addsuffix $(OBJ_DIR)/, config server)
 
 SRCS = $(addsuffix .cpp, $(MAIN)) \
-	   $(addprefix config/, $(addsuffix, .cpp, $(CONFIG))) \
-	   $(addprefix server/, $(addsuffix, .cpp, $(SERVER)))
+	   $(addprefix config/, $(addsuffix .cpp, $(CONFIG))) \
+	   $(addprefix server/, $(addsuffix .cpp, $(SERVER)))
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
 
