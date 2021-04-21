@@ -10,4 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef CONFIGREQUEST_HPP
+#define CONFIGREQUEST_HPP
+//request part yet.
 
+#endif

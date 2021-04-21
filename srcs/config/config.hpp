@@ -14,5 +14,21 @@
 
 #include "webserv.hpp"
 
+class Config
+{
+    public:
+		//default Class component.
+        Config(std::string Path = DEFAULT_CONFIG);
+        Config(Config const &src);
+        virtual	~Config(void);
+
+        Config     					&operator=(Config const &Co);
+        int         				pull(const char *filename);
+        std::vector<ConfigServer>	getServer_list() const;
+    private:
+		std::vector<ConfigServer>	server_list;
+};
+
+std::ostream						&operator<<(std::ostream &out, const Config &config);
 
 #endif

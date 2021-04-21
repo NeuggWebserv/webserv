@@ -26,7 +26,7 @@ typedef struct  s_error_page {
 }               t_error_page;
 
 bool 			is_digits(const std::string &str);
-unsigned int	str_to_ip(std::string strIp);
+unsigned int	str_to_ip(std::string str_ip);
 std::string		remove_adjacent_slashes(const std::string &str);
 
 #endif
