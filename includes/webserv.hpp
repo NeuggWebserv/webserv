@@ -21,6 +21,7 @@
 # include <time.h>
 # include <errno.h>
 # include <dirent.h>
+# include <string.h>
 
 // C system
 # include <sys/types.h>
@@ -34,10 +35,18 @@
 # include <netinet/in.h>
 # include <arpa/inet.h>
 
+// Defines
+#ifndef PACKET_SIZE
+# define PACKET_SIZE 1400
+#endif
+
 typedef struct  s_listen
 {
     unsigned    host;
     int         port;
 }               t_listen;
+
+// string_utils
+bool is_suffix(const std::string& src, const std::string& suffix);
 
 #endif /* WEBSERV_HPP */
