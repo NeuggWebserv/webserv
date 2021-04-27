@@ -7,4 +7,5 @@
 소스트리를 이용한 프로젝트 진행
 
 ### 📚reference
-https://github.com/cclaude42/webserv
+https://github.com/cclaude42/webserv<br>
+https://www.nginx.com/resources/wiki/start/topics/examples/full/<br>
