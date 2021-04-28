@@ -52,7 +52,7 @@ class ConfigRequest
 		std::map<int, std::string>					error_page;
 		unsigned long								cli_body_buf_size;
 		std::map<std::string, std::string>			cgi_param;
-		std::string									cgi_path;
+		std::string									cgi_pass;
 		std::set<std::string>						allowed_method;
 		t_listen									host_port;
 		std::string									len;
