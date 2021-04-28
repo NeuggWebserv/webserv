@@ -39,29 +39,29 @@ parseMap ConfigServer::init_location_map()
 
 parseMap ConfigServer::location_parsing_map = ConfigServer::init_location_map();
 
-ConfigServer				ConfigServer::init_default_server(const char *filename)
-{
-	ConfigServer	server;
-	fileVector		file;
+// ConfigServer				ConfigServer::init_default_server(const char *filename)
+// {
+// 	ConfigServer	server;
+// 	fileVector		file;
 
-	file = ConfigReader::readFile(filename);
-	if (file.empty()) {
-		std::cerr << RED << "Could not open default file at location [" << filename << "]" << RESET << std::endl;
-		throw ConfigReader::FileNotFoundException();
-	}
-	fileVector	begin;
-	begin.push_back("server");
-	begin.push_back("{");
-	file.insert(file.begin(), begin.begin(), begin.end());
-	file.insert(file.end(), "}");
-	unsigned int	index = 2;
-	if (!server.parse_server(index, file)) {
-		std::cerr << RED << "Invalid default config file." << RESET << std::endl;
-		throw ConfigServer::ExceptionInvalidArguments();
-	}
-	ConfigServer::default_server = server;
-	return server;
-}
+// 	file = ConfigReader::readFile(filename);
+// 	if (file.empty()) {
+// 		// std::cerr << RED << "Could not open default file at location [" << filename << "]" << RESET << std::endl;
+// 		throw ConfigReader::FileNotFoundException();
+// 	}
+// 	fileVector	begin;
+// 	begin.push_back("server");
+// 	begin.push_back("{");
+// 	file.insert(file.begin(), begin.begin(), begin.end());
+// 	file.insert(file.end(), "}");
+// 	unsigned int	index = 2;
+// 	if (!server.parse_server(index, file)) {
+// 		// std::cerr << RED << "Invalid default config file." << RESET << std::endl;
+// 		throw ConfigServer::ExceptionInvalidArguments();
+// 	}
+// 	ConfigServer::default_server = server;
+// 	return server;
+// }
 
 // CONSTRUCTORS
 
@@ -135,9 +135,7 @@ int     ConfigServer::parse_server(unsigned int &index, fileVector &file)
 		}
 		else
 		{
-			if (directive == "")
-				return file[index] == "}" ? 1 : 0;
-			else if (file[index] == "location")
+			if (file[index] == "location")
 			{
 				ConfigServer	location;
 				std::string		location_name;
@@ -162,6 +160,8 @@ int     ConfigServer::parse_server(unsigned int &index, fileVector &file)
 				if (file[index] == "}")								//		없어도 똑같지 않나?
 					continue ;
 			}
+			else if (directive == "")
+				return file[index] == "}" ? 1 : 0;
 			else
 				args.push_back(file[index]);
 		}
@@ -186,13 +186,15 @@ void	ConfigServer::pass_members(ConfigServer &server) const
 		if (server.root == "")
 			server.root = this->root;
 		server.server_name.insert(server.server_name.end(), this->server_name.begin(), this->server_name.end());
-		for (std::map<int, std::string>::const_iterator i = this->error_page.begin(); i != this->error_page.end(); i++) {
+		for (std::map<int, std::string>::const_iterator i = this->error_page.begin(); i != this->error_page.end(); i++)
+		{
 			if (server.error_page.find(i->first) == server.error_page.end())
 				server.error_page[i->first] = i->second;
 		}
 		if (server.client_body_buffer_size == 0)
 			server.client_body_buffer_size = this->client_body_buffer_size;
-		for (std::map<std::string, std::string>::const_iterator i = this->cgi_param.begin() ; i != this->cgi_param.end(); i++) {
+		for (std::map<std::string, std::string>::const_iterator i = this->cgi_param.begin() ; i != this->cgi_param.end(); i++)
+		{
 			if (server.cgi_param.find(i->first) == server.cgi_param.end())
 				server.cgi_param[i->first] = i->second;
 		}
@@ -266,35 +268,36 @@ int     ConfigServer::parse_location(unsigned int &index, fileVector &file)
 
 void        ConfigServer::add_listen(std::vector<std::string> args)
 {
-	t_listen    listen;
+	t_listen    lstn;
 	size_t      separator;
 
 	if (args.size() != 1)
 		throw ConfigServer::ExceptionInvalidArguments();
 	if ((separator = args[0].find(":")) == std::string::npos)
 	{
-		if (is_digits(args[0])) {
-			listen.host = 0;
-			listen.port = std::atoi(args[0].c_str());
-			for (std::vector<t_listen>::const_iterator it = listen.begin(); it != listen.end(); it++)
+		if (is_digits(args[0]))
+		{
+			lstn.host = 0;
+			lstn.port = std::atoi(args[0].c_str());
+			for (std::vector<t_listen>::const_iterator it = this->listen.begin(); it != this->listen.end(); it++)
 			{
-				if (it->port == listen.port)
+				if (it->port == lstn.port)
 					throw ConfigServer::ExceptionInvalidArguments();
 			}
-			this->listen.push_back(listen);
+			this->listen.push_back(lstn);
 			return ;
 		}
 		throw ConfigServer::ExceptionInvalidArguments();
 	}
 	else
 	{
-		listen.host = str_to_ip(args[0].substr(0, separator));
+		lstn.host = str_to_ip(args[0].substr(0, separator));
 		separator++;
 		std::string	portStr = args[0].substr(separator);
 		if (is_digits(portStr))
 		{
-			listen.port = std::atoi(portStr.c_str());
-			this->listen.push_back(listen);
+			lstn.port = std::atoi(portStr.c_str());
+			this->listen.push_back(lstn);
 			return ;
 		}
 		throw ConfigServer::ExceptionInvalidArguments();
