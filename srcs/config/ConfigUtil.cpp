@@ -18,7 +18,7 @@ unsigned int	str_to_ip(std::string str_ip)
 	{
 		sep = str_ip.find_first_of('.', sep);
 		std::string str = str_ip.substr(start, sep);
-		n = ft_atoi(str.c_str());
+		n = std::atoi(str.c_str());
 		uchar_ip[i] = static_cast<unsigned char>(n);
 		sep++;
 		start = sep;
