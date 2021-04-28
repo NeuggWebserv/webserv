@@ -14,6 +14,11 @@
 
 #include "webserv.hpp"
 
+#include "ConfigRequest.hpp"
+#include "ConfigServer.hpp"
+#include "ConfigUtil.hpp"
+#include "ConfigReader.hpp"
+
 class Config
 {
     public:

@@ -15,7 +15,7 @@
 
 #include "webserv.hpp"
 
-#define BUFFER_SIZE 2048
+#define BUFFER_SIZE 2048 // default buffersize 2048
 
 class ConfigReader
 {
@@ -28,6 +28,9 @@ class ConfigReader
 		static fileVector	readFile(const char *file);
 		static fileVector	split(std::string str, std::string charset);
 		class FileNotFoundException: public std::exception{
+			virtual const char *what() const throw();
+		};
+		class ReadFunctionException: public std::exception{
 			virtual const char *what() const throw();
 		};
 	private:
