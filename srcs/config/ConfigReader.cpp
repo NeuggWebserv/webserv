@@ -65,15 +65,12 @@ fileVector		ConfigReader::readFile(const char *file_name)
 	if ((fd = open(file_name,O_RDONLY)) <= 0)
 		throw (ConfigReader::FileNotFoundException());
 	res = BUFFER_SIZE;
-	while(res)
+	while ((res = read(fd, buf, BUFFER_SIZE)))
 	{
-		if (!(res = read(fd, buf, BUFFER_SIZE)))
+		if (res < 0)
 			throw (ConfigReader::ReadFunctionException());
-		else
-		{
-			buf[res] = '\0';
-			contents += buf;
-		}
+		buf[res] = '\0';
+		contents += buf;
 	}
 	file = ConfigReader::split(contents, std::string(" \n\t"));
 	return (file);
