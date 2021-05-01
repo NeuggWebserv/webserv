@@ -15,8 +15,6 @@
 
 # include "webserv.hpp"
 
-# define parseMap std::map<std::string, void (ConfigServer::*)(fileVector)>
-
 class ConfigServer;
 class ConfigRequest;
 

@@ -14,7 +14,7 @@
 #define CONFIGREQUEST_HPP
 
 #include "webserv.hpp"
-#include "config.hpp"
+#include "Config.hpp"
 
 class ConfigRequest
 {

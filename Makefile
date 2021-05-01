@@ -2,17 +2,19 @@ NAME = webserv
 
 CC = clang++
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -D TEST -std=c++98
 
-INCLUDES = -I includes -I srcs/config -I srcs/server
+INCLUDES = -I includes -I srcs/config -I srcs/server -I srcs/utils
 
 # FILES
 
 MAIN = webserv
 
-CONFIG = config
+CONFIG = Config ConfigReader ConfigServer ConfigUtil
 
 SERVER = server server_socket
+
+UTILS = pathIsFile string_utils
 
 # SRCS & OBJS
 
@@ -20,11 +22,12 @@ SRC_DIR = srcs
 
 OBJ_DIR = objs
 
-OBJ_SUBDIR = $(addsuffix $(OBJ_DIR)/, config server)
+OBJ_SUBDIR = $(addprefix $(OBJ_DIR)/, config server utils)
 
 SRCS = $(addsuffix .cpp, $(MAIN)) \
 	   $(addprefix config/, $(addsuffix .cpp, $(CONFIG))) \
-	   $(addprefix server/, $(addsuffix .cpp, $(SERVER)))
+	   $(addprefix server/, $(addsuffix .cpp, $(SERVER))) \
+	   $(addprefix utils/, $(addsuffix .cpp, $(UTILS)))
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
 

@@ -22,6 +22,7 @@
 # include <time.h>
 # include <errno.h>
 # include <dirent.h>
+# include <string.h>
 
 // C system
 # include <sys/types.h>
@@ -34,6 +35,10 @@
 # include <sys/select.h>
 # include <netinet/in.h>
 # include <arpa/inet.h>
+
+#ifndef PACKET_SIZE
+# define PACKET_SIZE 1400
+#endif
 
 /*
  * typedef part
@@ -50,5 +55,7 @@ typedef struct  s_error_page {
 }               t_error_page;
 
 typedef std::vector<std::string> fileVector;
+
+bool is_suffix(const std::string& src, const std::string& suffix);
 
 #endif /* WEBSERV_HPP */

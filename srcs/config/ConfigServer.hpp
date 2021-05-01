@@ -18,6 +18,8 @@
 #include "Config.hpp"
 // #include "TestConfigServer/test.hpp"
 
+# define parseMap std::map<std::string, void (ConfigServer::*)(fileVector)>
+
 class ConfigServer
 {
 	public:

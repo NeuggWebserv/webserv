@@ -14,7 +14,6 @@
 
 #include "webserv.hpp"
 
-#include "ConfigRequest.hpp"
 #include "ConfigServer.hpp"
 #include "ConfigUtil.hpp"
 #include "ConfigReader.hpp"
@@ -23,14 +22,18 @@ class Config
 {
     public:
 		//default Class component.
-        Config(std::string Path = DEFAULT_CONFIG);
+        Config() {}
+        Config(std::string Path);
         Config(Config const &src);
         virtual	~Config(void);
 
         Config     					&operator=(Config const &Co);
         int         				pull(const char *filename);
         std::vector<ConfigServer>	getServer_list() const;
+        std::vector<t_listen> get_all_listens() const;
+
     private:
+        
 		std::vector<ConfigServer>	server_list;
 };
 
