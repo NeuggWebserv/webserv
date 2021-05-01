@@ -12,6 +12,7 @@ unsigned int	str_to_ip(std::string str_ip)
 	unsigned int	n;
 	unsigned char	uchar_ip[4];
 	size_t			start = 0;
+
 	if (str_ip == "localhost")
 		str_ip = "127.0.0.1";
 	for (unsigned int i = 3 ; i != std::numeric_limits<uint32_t>::max(); i--)

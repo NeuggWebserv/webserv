@@ -16,18 +16,19 @@
 
 #include "webserv.hpp"
 #include "Config.hpp"
-// #include "TestConfigServer/test.hpp"
 
 class ConfigServer
 {
 	public:
-		// *	DEFAULT
+		typedef typename std::map<std::string, void (ConfigServer::*)(fileVector)> parseMap;
+
+		// *	CANONICAL
 		ConfigServer(void);
 		ConfigServer(ConfigServer const &src);
 		virtual ~ConfigServer(void);
 		ConfigServer						&operator=(ConfigServer const &src);
 
-		// *	GETERS
+		// *	GETTERS
 		//	ONLY SERVER
 		std::vector<t_listen>				get_listen() const;
 		std::vector<std::string>   			get_server_name() const;
@@ -71,12 +72,12 @@ class ConfigServer
 		std::vector<t_listen>				listen;
 		std::vector<std::string>			server_name;
 		//	BOTH SERVER, LOCATION
+		std::map<std::string, ConfigServer>	location;
 		std::string							root;
 		std::map<int, std::string>			error_page; // error page redirections
 		int									client_body_buffer_size; // max size for the client body, defaults to 8 000
 		std::map<std::string, std::string>	cgi_param;
 		std::string							cgi_pass;
-		std::map<std::string, ConfigServer>	location;
 		std::set<std::string>				allowed_methods;
 		std::vector<std::string>			index;
 		bool								autoindex;
