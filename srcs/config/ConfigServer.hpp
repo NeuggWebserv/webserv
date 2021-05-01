@@ -71,12 +71,12 @@ class ConfigServer
 		std::vector<t_listen>				listen;
 		std::vector<std::string>			server_name;
 		//	BOTH SERVER, LOCATION
+		std::map<std::string, ConfigServer>	location;
 		std::string							root;
 		std::map<int, std::string>			error_page; // error page redirections
 		int									client_body_buffer_size; // max size for the client body, defaults to 8 000
 		std::map<std::string, std::string>	cgi_param;
 		std::string							cgi_pass;
-		std::map<std::string, ConfigServer>	location;
 		std::set<std::string>				allowed_methods;
 		std::vector<std::string>			index;
 		bool								autoindex;
