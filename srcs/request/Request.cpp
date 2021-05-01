@@ -1,5 +1,9 @@
 #include "Request.hpp"
 
+/*
+**	CANONICAL
+*/
+
 Request::Request(const std::string& str) :
 method(""), 
 version(""), 
@@ -35,7 +39,7 @@ Request&	Request::operator=(const Request& obj)
 }
 
 /*
-** GETTERS
+**	GETTERS
 */
 
 const std::map<std::string, std::string>&	Request::get_headers() const
@@ -95,7 +99,7 @@ const std::list<std::pair<std::string, float> >&	Request::get_lang() const
 
 
 /*
-** SETTERS
+**	SETTERS
 */
 
 void	Request::set_body(const std::string& str)
