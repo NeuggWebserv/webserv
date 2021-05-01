@@ -16,18 +16,19 @@
 
 #include "webserv.hpp"
 #include "Config.hpp"
-// #include "TestConfigServer/test.hpp"
 
 class ConfigServer
 {
 	public:
-		// *	DEFAULT
+		typedef typename std::map<std::string, void (ConfigServer::*)(fileVector)> parseMap;
+
+		// *	CANONICAL
 		ConfigServer(void);
 		ConfigServer(ConfigServer const &src);
 		virtual ~ConfigServer(void);
 		ConfigServer						&operator=(ConfigServer const &src);
 
-		// *	GETERS
+		// *	GETTERS
 		//	ONLY SERVER
 		std::vector<t_listen>				get_listen() const;
 		std::vector<std::string>   			get_server_name() const;

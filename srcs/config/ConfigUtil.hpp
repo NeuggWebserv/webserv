@@ -15,11 +15,8 @@
 
 # include "webserv.hpp"
 
-# define parseMap std::map<std::string, void (ConfigServer::*)(fileVector)>
-
 class ConfigServer;
 class ConfigRequest;
-
 
 bool 			is_digits(const std::string &str);
 unsigned int	str_to_ip(std::string str_ip);
