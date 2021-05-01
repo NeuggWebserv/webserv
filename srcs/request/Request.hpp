@@ -1,4 +1,7 @@
-#include "webserve.hpp"
+#ifndef REQUEST_HPP
+#define REQUEST_HPP
+
+#include "webserv.hpp"
 
 class Request
 {
@@ -67,3 +70,5 @@ public:
 };
 
 std::ostream&	operator<<(std::ostream& os, const Request& re);
+
+#endif
