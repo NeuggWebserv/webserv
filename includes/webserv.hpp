@@ -12,6 +12,7 @@
 # include <utility>
 # include <map>
 # include <vector>
+# include <set>
 
 // C Includes
 # include <unistd.h>
@@ -34,10 +35,20 @@
 # include <netinet/in.h>
 # include <arpa/inet.h>
 
+/*
+ * typedef part
+ */
 typedef struct  s_listen
 {
     unsigned    host;
     int         port;
 }               t_listen;
+
+typedef struct  s_error_page {
+	std::vector<int>    error_codes; // all of the codes that will be redirected
+	std::string         uri;		// uri to which they are redirected
+}               t_error_page;
+
+typedef std::vector<std::string> fileVector;
 
 #endif /* WEBSERV_HPP */
