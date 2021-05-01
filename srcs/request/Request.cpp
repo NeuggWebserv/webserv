@@ -109,7 +109,7 @@ void	Request::set_body(const std::string& str)
 	this->body.assign(str);
 	for (int i = 0; i < 4; i++)
 		if (this->body.size() > 0 && this->body[this->body.size() - 1] == strip[i % 2])
-			pop(this->body);
+			pop_str_tail(this->body);
 		else
 			break ;
 }
