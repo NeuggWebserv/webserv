@@ -12,6 +12,7 @@
 # include <utility>
 # include <map>
 # include <vector>
+# include <set>
 
 // C Includes
 # include <unistd.h>
@@ -23,7 +24,7 @@
 # include <dirent.h>
 # include <string.h>
 
-// C system
+// C System
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
@@ -40,13 +41,20 @@
 # define PACKET_SIZE 1400
 #endif
 
+// Typedef
 typedef struct  s_listen
 {
     unsigned    host;
     int         port;
 }               t_listen;
 
-// string_utils
+typedef struct s_error_page
+{
+	std::vector<int>    error_codes;
+	std::string         uri;
+}               t_error_page;
+
+// Utils
 bool is_suffix(const std::string& src, const std::string& suffix);
 
 #endif /* WEBSERV_HPP */
