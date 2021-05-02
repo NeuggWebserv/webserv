@@ -10,7 +10,7 @@ int main(int argc, char **argv)
         try
         {
             server.set_config(argv[1]);
-            server.set_server();
+            server.set_socket();
             server.run();
         }
         catch (std::exception &e)
