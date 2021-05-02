@@ -6,7 +6,7 @@ Server::~Server() {};
 
 void Server::set_config(const char *filename)
 {
-    config.load_config(filename);
+    config.pull(filename);
 }
 
 void Server::set_socket(void)

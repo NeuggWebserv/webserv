@@ -6,7 +6,7 @@
 class Config
 {
 public:
-    void load_config(const char *filename)
+    void pull(const char *filename)
     {
         /* For test */
     }
