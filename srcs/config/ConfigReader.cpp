@@ -14,20 +14,20 @@
 
 ConfigReader::ConfigReader(void){ }
 
-ConfigReader::ConfigReader(ConfigReader const &Co)
+ConfigReader::ConfigReader(ConfigReader const &co)
 {
-	if (this == &Co)
+	if (this == &co)
 		return ;
-	*this = Co;
+	*this = co;
 }
 
 ConfigReader::~ConfigReader(void) {}
 
-ConfigReader	&ConfigReader::operator=(ConfigReader const &Co)
+ConfigReader	&ConfigReader::operator=(ConfigReader const &co)
 {
-	if (this == &Co)
+	if (this == &co)
 		return (*this);
-	*this = Co;
+	*this = co;
 	return (*this);
 }
 
@@ -51,7 +51,7 @@ fileVector		ConfigReader::split(std::string str, std::string charset)
 	return (val); //return fileVector
 }
 
-fileVector		ConfigReader::readFile(const char *file_name)
+fileVector		ConfigReader::read_file(const char *file_name)
 {
 	int			res = BUFFER_SIZE;
 	char		buf[BUFFER_SIZE + 1];
