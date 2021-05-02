@@ -17,22 +17,23 @@ private:
 	std::string									query;
 	std::list<std::pair<std::string, float> >	lang;
 	const std::string&							raw;
-	/*** PARSING ***/
+
+	//				PARSING
 	int			read_first_line(const std::string& line);
 	int			read_path(const std::string& line, size_t i);
 	int			read_version(const std::string& line, size_t i);
 	int			check_method();
 	int			check_port();
 	void		find_query();
-	std::string format_header_for_CGI(std::string& key);
+	std::string format_header_for_cgi(std::string& key);
 	std::string	next_line(const std::string &str, size_t& i);
 	void		set_lang();
 
 
-	/*** AVAILABLE HTTP METHODS ***/
+	//				AVAILABLE HTTP METHODS
 	static	std::vector<std::string>	methods;
 
-	/*** UNAVAILABLE CTORS ***/
+	//				UNAVAILABLE CTORS
 	Request();
 	Request(const Request&);
 
@@ -41,7 +42,7 @@ public:
 	~Request();
 	Request&	operator=(const Request&);
 
-	/*** GET_ERS ***/
+	//				GETTERS
 	const std::map<std::string, std::string>&			get_headers() const;
 	const std::map<std::string, std::string>&			get_env() const;
 	const std::string&									get_method() const;
@@ -54,18 +55,23 @@ public:
 	const std::string&									get_raw() const;
 	const std::list<std::pair<std::string, float> >&	get_lang() const;
 
-	/*** SETTERS **/
+	//				SETTERS
 	void	set_body(const std::string& line);
 	void	set_ret(int);
 	void	set_method(const std::string &method);
 
-	/*** UTILS ****/
+	//				UTILS
 	int		parse(const std::string& str);
 	void	reset_headers();
 	void	strip_all();
 	void	display_headers() const;
 
 	static std::vector<std::string>		init_methods();
+
+	class	ExceptionParseError : public std::exception
+	{
+		virtual const char	*what() const throw();
+	};
 
 };
 
