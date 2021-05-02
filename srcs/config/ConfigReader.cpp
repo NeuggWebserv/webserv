@@ -31,9 +31,9 @@ ConfigReader	&ConfigReader::operator=(ConfigReader const &co)
 	return (*this);
 }
 
-fileVector		ConfigReader::split(std::string str, std::string charset)
+Config::fileVector		ConfigReader::split(std::string str, std::string charset)
 {
-	fileVector	val;
+	Config::fileVector	val;
 
 	str+=charset[0]; // ' ' insert
 	std::string::size_type start_idx = str.find_first_not_of(charset, 0);
@@ -48,16 +48,16 @@ fileVector		ConfigReader::split(std::string str, std::string charset)
 		if ((start_idx = str.find_first_not_of(charset, end_idx)) == std::string::npos)
 			break ; // end index not found charset
 	}
-	return (val); //return fileVector
+	return (val); //return Config::fileVector
 }
 
-fileVector		ConfigReader::read_file(const char *file_name)
+Config::fileVector		ConfigReader::read_file(const char *file_name)
 {
 	int			res = BUFFER_SIZE;
 	char		buf[BUFFER_SIZE + 1];
 	std::string	contents="";
 	int			fd;
-	fileVector	file;
+	Config::fileVector	file;
 
 	//init buf array
 	for (int i=0;i<BUFFER_SIZE;i++)

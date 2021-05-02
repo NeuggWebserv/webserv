@@ -23,10 +23,10 @@ class ConfigReader
 		ConfigReader();
 		ConfigReader(ConfigReader const &co);
 		virtual ~ConfigReader();
-		
-		ConfigReader		&operator=(ConfigReader const &co);
-		static fileVector	read_file(const char *file);
-		static fileVector	split(std::string str, std::string charset);
+
+		ConfigReader				&operator=(ConfigReader const &co);
+		static Config::fileVector	read_file(const char *file);
+		static Config::fileVector	split(std::string str, std::string charset);
 		class FileNotFoundException: public std::exception{
 			virtual const char *what() const throw();
 		};

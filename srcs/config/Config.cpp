@@ -34,7 +34,7 @@ Config	&Config::operator=(Config const &co)
 
 Config::~Config() { return ;}
 
-std::vector<ConfigServer>	Config::getServer_list() const
+std::vector<ConfigServer>	Config::get_server_list() const
 {
 	return (this->server_list);
 }
@@ -58,7 +58,7 @@ int		Config::pull(const char *filename)
 				return (1);
 			}
 			++i;
-			if (!conf_server.parseServer(i, file))
+			if (!conf_server.parse_server(i, file))
 			{
 				std::cerr << "Error: error in config file [" << filename << "]" << std::endl;
 				return (1);
@@ -74,45 +74,45 @@ int		Config::pull(const char *filename)
 	return (0);
 }
 
-bool		Config::getServer_for_request(ConfigServer &ret, t_listen const address, std::string const host_name) const 
+bool		Config::get_server_for_request(ConfigServer &ret, t_listen const address, std::string const host_name) const 
 {
-	std::vector<ConfigServer>	possibleServers;
+	std::vector<ConfigServer>	possible_servers;
 
-	for (std::vector<ConfigServer>::const_iterator serversIter = this->_servers.begin() ; serversIter != this->_servers.end(); serversIter++) 
+	for (std::vector<ConfigServer>::const_iterator servers_iter = this->server_list.begin() ; servers_iter != this->server_list.end(); servers_iter++) 
 	{
-		std::vector<t_listen>	listens = serversIter->getListen();
+		std::vector<t_listen>	listens = servers_iter->get_listen();
 		for (std::vector<t_listen>::iterator listenIter = listens.begin(); listenIter != listens.end(); listenIter++) 
 		{
 			if (address.host == (*listenIter).host && address.port == (*listenIter).port) {
-				possibleServers.push_back((*serversIter));
+				possible_servers.push_back((*servers_iter));
 			}
 		}
 	}
-	if (possibleServers.empty())
+	if (possible_servers.empty())
 		return false;
-	for (std::vector<ConfigServer>::iterator serversIter = possibleServers.begin() ; serversIter != possibleServers.end(); serversIter++) 
+	for (std::vector<ConfigServer>::iterator servers_iter = possible_servers.begin() ; servers_iter != possible_servers.end(); servers_iter++) 
 	{
-		std::vector<std::string>	serverNames = serversIter->getServerName();
-		for (fileVector::iterator servNameIter = serverNames.begin() ; servNameIter != serverNames.end(); servNameIter++) 
+		std::vector<std::string>	server_names = servers_iter->get_server_name();
+		for (fileVector::iterator serv_name_iter = server_names.begin() ; serv_name_iter != server_names.end(); serv_name_iter++) 
 		{
-			if (*servNameIter == hostName) 
+			if (*serv_name_iter == host_name) 
 			{
-				ret = *serversIter;
+				ret = *servers_iter;
 				return true;
 			}
 		}
 	}
-	ret = possibleServers[0];
+	ret = possible_servers[0];
 	return true;
 }
 
-std::vector<t_listen>		getAllListens() const
+std::vector<t_listen>		get_all_listens() const
 {
 	std::vector<t_listen>	ret;
 
-	for (std::vector<ConfigServer>::const_iterator server = this->_servers.begin(); server != this->_servers.end(); server++) 
+	for (std::vector<ConfigServer>::const_iterator server = this->server_list.begin(); server != this->server_list.end(); server++) 
 	{
-		std::vector<t_listen>	listenVec = server->getListen();
+		std::vector<t_listen>	listenVec = server->get_listen();
 		for (std::vector<t_listen>::iterator listen = listenVec.begin(); listen != listenVec.end(); listen++) 
 		{
 			std::vector<t_listen>::iterator i = ret.begin();
