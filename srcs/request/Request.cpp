@@ -38,6 +38,20 @@ Request&	Request::operator=(const Request& obj)
 	return *this;
 }
 
+std::ostream&	operator<<(std::ostream& os, const Request& re)
+{
+	std::map<std::string, std::string>::const_iterator it;
+
+	os << "Metohd : " << re.get_method() << " |\tHTTP version : " << re.get_version() << "\n" \
+	<< "Port : " << re.get_port() << '\n' << "Path : " << re.get_path() << '\n';
+
+	for (it = re.get_headers(); it != re.get_headers().end(); it++)
+		os << it->first << ": " << it->second << '\n';
+	os << '\n' << "Request body : " << re.get_body() << '\n';
+
+	return (os);
+}
+
 /*
 **	GETTERS
 */

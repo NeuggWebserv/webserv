@@ -19,9 +19,9 @@ private:
 	const std::string&							raw;
 
 	//				PARSING
-	int			read_first_line(const std::string& line);
-	int			read_path(const std::string& line, size_t i);
-	int			read_version(const std::string& line, size_t i);
+	int			read_first_line(const std::string& content);
+	int			read_path(const std::string& content, size_t i);
+	int			read_version(const std::string& content, size_t i);
 	int			check_method();
 	int			check_port();
 	void		find_query();
@@ -61,10 +61,9 @@ public:
 	void	set_method(const std::string &method);
 
 	//				UTILS
-	int		parse(const std::string& str);
+	int		pull(const std::string& str);
 	void	reset_headers();
 	void	strip_all();
-	void	display_headers() const;
 
 	static std::vector<std::string>		init_methods();
 
