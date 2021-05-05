@@ -50,6 +50,4 @@ typedef struct  s_error_page {
 	std::string         uri;		// uri to which they are redirected
 }               t_error_page;
 
-typedef std::vector<std::string> fileVector;
-
 #endif /* WEBSERV_HPP */
