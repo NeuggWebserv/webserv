@@ -21,19 +21,23 @@
 
 class Config
 {
-    public:
-		//default Class component.
-        Config(std::string Path = DEFAULT_CONFIG);
-        Config(Config const &src);
-        virtual	~Config(void);
+public:
+    typedef typename  std::vector<std::string> fileVector;
+    //default Class component.
+    Config(std::string Path = DEFAULT_CONFIG);
+    Config(Config const &src);
+    virtual ~Config(void);
+    Config                    &operator=(Config const &co);
 
-        Config     					&operator=(Config const &Co);
-        int         				pull(const char *filename);
-        std::vector<ConfigServer>	getServer_list() const;
-    private:
-		std::vector<ConfigServer>	server_list;
+    int                       pull(const char *filename);
+    std::vector<ConfigServer> get_server_list() const;
+    std::vector<t_listen>     get_all_listens() const;
+private:
+    bool                      get_server_for_request(ConfigServer &ret, t_listen const address, std::string const host_name) const;
+    std::vector<ConfigServer>   server_list;
 };
 
-std::ostream						&operator<<(std::ostream &out, const Config &config);
+std::ostream                        &operator<<(std::ostream &out, const Config &config);
 
 #endif
+

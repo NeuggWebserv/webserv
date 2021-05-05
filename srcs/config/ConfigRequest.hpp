@@ -20,13 +20,13 @@ class ConfigRequest
 {
 	public:
 		ConfigRequest(void);
-		ConfigRequest(ConfigRequest const &Cr);
+		ConfigRequest(ConfigRequest const &cr);
 		ConfigRequest(ConfigServer &config, Request &request, const std::string &path,
 		const std::string &method, std::string &location_name);
 		virtual ~ConfigRequest(void);
 
-		ConfigRequest								&operator=(ConfigRequest const &Cr);
-		friend std::ostream							&operator<<(std::ostream &os, ConfigRequest &Cr);
+		ConfigRequest								&operator=(ConfigRequest const &cr);
+		friend std::ostream							&operator<<(std::ostream &os, ConfigRequest &cr);
 
 		const std::string							&get_content_location() const;
 		const std::string							&get_path() const;
@@ -45,7 +45,7 @@ class ConfigRequest
 		void										set_content_location(const std::string&);
 		void										set_host_port(const t_listen hostport);
 
-		std::string									addIndex(Request &request);
+		std::string									add_index(Request &request);
 	private:
 		std::string									content_location;
 		std::string									path;
