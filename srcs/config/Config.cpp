@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "Config.hpp"
+#include "ConfigServer.hpp"
+#include "ConfigReader.hpp"
 
 Config::Config(std::string Path)
 {
@@ -42,7 +44,7 @@ std::vector<ConfigServer>	Config::get_server_list() const
 int		Config::pull(const char *filename)
 {
 	fileVector				file;
-	unsigned int			file_size;
+	unsigned int							file_size;
 
 	file = ConfigReader::read_file(filename);
 	file_size = file.size();
@@ -63,7 +65,7 @@ int		Config::pull(const char *filename)
 				std::cerr << "Error: error in config file [" << filename << "]" << std::endl;
 				return (1);
 			}
-			this->server_list.push_back(server);
+			this->server_list.push_back(conf_server);
 		}
 		else
 		{
@@ -106,7 +108,7 @@ bool		Config::get_server_for_request(ConfigServer &ret, t_listen const address, 
 	return true;
 }
 
-std::vector<t_listen>		get_all_listens() const
+std::vector<t_listen>		Config::get_all_listens() const
 {
 	std::vector<t_listen>	ret;
 
