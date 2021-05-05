@@ -15,9 +15,6 @@
 
 # include "webserv.hpp"
 
-class ConfigServer;
-class ConfigRequest;
-
 bool 			is_digits(const std::string &str);
 unsigned int	str_to_ip(std::string str_ip);
 std::string		remove_adjacent_slashes(const std::string &str);

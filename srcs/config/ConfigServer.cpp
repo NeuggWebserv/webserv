@@ -136,7 +136,7 @@ int     ConfigServer::parse_server(unsigned int &index, Config::fileVector &file
 		{
 			if (file[index] == "location")
 			{
-				ConfigServer	location;
+				ConfigServer	new_location;
 				std::string		location_name;
 
 				if (directive != "")
@@ -153,11 +153,9 @@ int     ConfigServer::parse_server(unsigned int &index, Config::fileVector &file
 				if (file[index] != "{")
 					throw ConfigServer::ExceptionInvalidForm();
 				++index;
-				if (!location.parse_location(index, file))
+				if (!new_location.parse_location(index, file))
 					throw ConfigServer::ExceptionInvalidForm();
-				this->location[location_name] = location;
-				if (file[index] == "}")								//		없어도 똑같지 않나?
-					continue ;
+				this->location[location_name] = new_location;
 			}
 			else if (directive == "")
 				return file[index] == "}" ? 1 : 0;
@@ -170,8 +168,6 @@ int     ConfigServer::parse_server(unsigned int &index, Config::fileVector &file
 	if (file[index] != "}")
 		throw ConfigServer::ExceptionInvalidForm();
 	ConfigServer::default_server.pass_members(*this);
-	for (std::map<std::string, ConfigServer>::iterator i = this->location.begin() ; i != this->location.end(); i++)
-		this->pass_members(i->second);
 	return 1;
 }
 
@@ -227,10 +223,11 @@ int     ConfigServer::parse_location(unsigned int &index, Config::fileVector &fi
 		{
 			if (file[index] == "location")
 			{
-				ConfigServer	location;
+				ConfigServer	new_location;
 				std::string		location_name;
 
-				if (directive != "") {
+				if (directive != "")
+				{
 					(this->*ConfigServer::location_parsing_map[directive])(args);
 					args.clear();
 					directive = "";
@@ -243,11 +240,9 @@ int     ConfigServer::parse_location(unsigned int &index, Config::fileVector &fi
 				if (file[index] != "{")
 					throw ConfigServer::ExceptionInvalidForm();
 				++index;
-				if (!location.parse_location(index, file))
+				if (!new_location.parse_location(index, file))
 					throw ConfigServer::ExceptionInvalidForm();
-				this->location[location_name] = location;
-				if (file[index] == "}")											//	필요하냐고??
-					continue ;
+				this->location[location_name] = new_location;
 			}
 			else if (directive == "")
 				return file[index] == "}" ? 1 : 0;
