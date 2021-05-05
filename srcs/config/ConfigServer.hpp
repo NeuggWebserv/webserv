@@ -16,11 +16,12 @@
 
 #include "webserv.hpp"
 #include "Config.hpp"
+#include "ConfigReader.hpp"
 
 class ConfigServer
 {
 	public:
-		typedef typename std::map<std::string, void (ConfigServer::*)(fileVector)> parseMap;
+		typedef std::map<std::string, void (ConfigServer::*)(Config::fileVector)> parseMap;
 
 		// *	CANONICAL
 		ConfigServer(void);
