@@ -42,4 +42,16 @@ typedef struct  s_listen
     int         port;
 }               t_listen;
 
+// srcs/utils function
+
+std::string					read_key(char *line);
+std::string					read_key(const std::string& line);
+std::string					read_value(char *line);
+std::string					read_value(const std::string& line);
+std::string&				strip(std::string& str, char c);
+std::string&				capitalize(std::string& str);
+std::string					to_string(size_t n);
+std::string&				to_lower(std::string& str);
+std::string&				to_upper(std::string& str);
+std::string&				pop_str_tail(std::string& str);
 #endif /* WEBSERV_HPP */
