@@ -21,7 +21,7 @@
 class ConfigServer
 {
 	public:
-		typedef std::map<std::string, void (ConfigServer::*)(fileVector)> parseMap;
+		typedef std::map<std::string, void (ConfigServer::*)(Config::fileVector)> parseMap;
 
 		// *	CANONICAL
 		ConfigServer(void);

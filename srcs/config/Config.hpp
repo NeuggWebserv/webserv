@@ -13,18 +13,16 @@
 #define CONFIG_HPP
 
 #include "webserv.hpp"
-
-#include "ConfigRequest.hpp"
-#include "ConfigServer.hpp"
 #include "ConfigUtil.hpp"
-#include "ConfigReader.hpp"
+
+class ConfigServer;
 
 class Config
 {
 public:
-    typedef typename  std::vector<std::string> fileVector;
     //default Class component.
     Config(std::string Path = DEFAULT_CONFIG);
+	typedef std::vector<std::string> fileVector;
     Config(Config const &src);
     virtual ~Config(void);
     Config                    &operator=(Config const &co);

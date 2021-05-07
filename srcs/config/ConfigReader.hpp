@@ -14,6 +14,7 @@
 #define CONFIGREADER_HPP
 
 #include "webserv.hpp"
+#include "Config.hpp"
 
 #define BUFFER_SIZE 2048 // default buffersize 2048
 
