@@ -9,7 +9,7 @@ class Config;
 class ServerSocket
 {
 public:
-    ServerSocket(t_listen* lstn);
+    ServerSocket(const t_listen& lstn);
     ~ServerSocket();
 
     void setup();
@@ -24,7 +24,7 @@ private:
     ServerSocket();
 
     int                         server_fd;
-    t_listen                    *lstn;
+    t_listen                    lstn;
     struct sockaddr_in          address;
     std::map<int, std::string>  client_msg_mapping;
     char                        recv_buffer[PACKET_SIZE];

@@ -1,11 +1,11 @@
 #include "server_socket.hpp"
 
-ServerSocket::ServerSocket(t_listen* lstn) : lstn(lstn)
+ServerSocket::ServerSocket(const t_listen& lstn) : lstn(lstn)
 {
     memset(address.sin_zero, '\0', sizeof(address.sin_zero));
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = htonl(lstn->host);
-    address.sin_port = htons(lstn->port);
+    address.sin_addr.s_addr = htonl(lstn.host);
+    address.sin_port = htons(lstn.port);
 }
 
 ServerSocket::~ServerSocket() {}

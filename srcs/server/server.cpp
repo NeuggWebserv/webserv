@@ -18,7 +18,7 @@ void Server::set_socket(void)
     for (std::vector<t_listen>::iterator it = all_listens.begin();
         it != all_listens.end(); ++it)
     {
-        ServerSocket server_socket(&(*it));
+        ServerSocket server_socket(*it);
         int fd;
         server_socket.setup();
         fd = server_socket.get_fd();
