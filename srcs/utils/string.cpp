@@ -12,7 +12,24 @@
 
 #include "webserv.hpp"
 
-std::string						strip(std::string &str, char c)
+//compare func
+bool		compare_langs(const std::pair<std::string, float> first, const std::pair<std::string, float> second)
+{
+	return (first.second > second.second);
+}
+
+std::vector<std::string>		split(const std::string &str, char c)
+{
+	std::vector<std::string> tokens;
+	std::string token;
+	std::istringstream token_stream(str);
+
+	while (std::getline(token_stream, token, c))
+		tokens.push_back(token);
+	return (tokens);
+}
+
+std::string						&strip(std::string &str, char c)
 {
 	size_t	i;
 
@@ -36,20 +53,20 @@ std::string						to_string(size_t n)
 	return temp.str();
 }
 
-std::string&					pop_str_tail(std::string& str)
+std::string						&pop_str_tail(std::string& str)
 {
 	if (str.size())
 		str.resize(str.size() - 1);
 	return str;
 }
 
-std::string						to_upper(std::string &str)
+std::string						&str_to_upper(std::string &str)
 {
 	std::transform(str.begin(), str.end(),str.begin(), ::toupper);
 	return (str);
 }
 
-std::string						to_lower(std::string &str)
+std::string						&str_to_lower(std::string &str)
 {
 	std::transform(str.begin(), str.end(), str.begin(), ::tolower);
 	return (str);
@@ -59,7 +76,7 @@ std::string						&capitalize(std::string &str)
 {
 	size_t			i = 0;
 
-	to_lower(str);
+	str_to_lower(str);
 	str[i] = std::toupper(str[i]);
 	while((i = str.find_first_of('-', i + 1)) != std::string::npos)
 	{
