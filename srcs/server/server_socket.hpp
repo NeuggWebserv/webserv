@@ -26,7 +26,7 @@ private:
     int                         server_fd;
     t_listen                    *lstn;
     struct sockaddr_in          address;
-    std::map<int, std::string>  client_request_mapping;
+    std::map<int, std::string>  client_msg_mapping;
     char                        recv_buffer[PACKET_SIZE];
 };
 

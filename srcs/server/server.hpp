@@ -1,8 +1,8 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include "config.hpp"
 # include "server_socket.hpp"
+# include "config.hpp"
 # include "webserv.hpp"
 
 class Server
@@ -13,9 +13,7 @@ public:
     ~Server();
 
     void set_config(const char *filename);
-
     void set_socket(void);
-
     void run(void);
 
 private:
@@ -26,10 +24,6 @@ private:
     fd_set                          fd_status;
     size_t                          fd_size;
     int                             max_fd;
-
-#ifdef TEST
-# define PORT 8080
-#endif
 };
 
 #endif /* SERVER_HPP */
