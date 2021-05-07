@@ -28,6 +28,7 @@ private:
     struct sockaddr_in          address;
     std::map<int, std::string>  client_msg_mapping;
     char                        recv_buffer[PACKET_SIZE];
+    std::map<int, size_t>       sent; // mapping client_fd and idx of message sent
 };
 
 #endif /* SERVER_SOCKET_HPP */

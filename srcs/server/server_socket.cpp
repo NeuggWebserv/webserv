@@ -37,8 +37,6 @@ int ServerSocket::accept()
 
 int ServerSocket::send(int client_fd)
 {
-    static std::map<int, size_t> sent; // mapping client_fd and idx of message sent
-
     if (sent.find(client_fd) == sent.end()) // initiate sending
         sent.insert(std::make_pair(client_fd, 0));
     std::string partial_str = client_msg_mapping[client_fd].substr(sent[client_fd], PACKET_SIZE);
@@ -112,6 +110,7 @@ void ServerSocket::close_client_fd(int client_fd)
         return ;
     close(client_fd);
     client_msg_mapping.erase(client_fd);
+    sent.erase(client_fd);
 }
 
 int ServerSocket::get_fd() const
