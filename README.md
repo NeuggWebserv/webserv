@@ -13,3 +13,4 @@
 <https://bodamnury.tistory.com/38> - struct stat<br>
 <https://developer.mozilla.org/ko/docs/Web/HTTP/Methods> - http method<br>
 <https://server-talk.tistory.com/308> - CGI and Fast CGI<br>
+<http://www.dreamy.pe.kr/zbxe/CodeClip/3769009> - istringstream<br>
