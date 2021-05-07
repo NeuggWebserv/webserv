@@ -6,6 +6,7 @@
 # include <iomanip>
 # include <string>
 # include <limits>
+# include <sstream>
 
 // CPP Containers
 # include <algorithm>
@@ -51,7 +52,11 @@ std::string					read_value(const std::string& line);
 std::string&				strip(std::string& str, char c);
 std::string&				capitalize(std::string& str);
 std::string					to_string(size_t n);
-std::string&				to_lower(std::string& str);
-std::string&				to_upper(std::string& str);
+std::string&				str_to_lower(std::string& str);
+std::string&				str_to_upper(std::string& str);
 std::string&				pop_str_tail(std::string& str);
+std::vector<std::string>	split(const std::string &str, char c);
+
+//				Compare
+bool						compare_langs(const std::pair<std::string, float> first, const std::pair<std::string, float> second);
 #endif /* WEBSERV_HPP */

@@ -94,7 +94,7 @@ int			Request::read_version(const std::string& content, size_t i)
 	if (this->version != "1.0" && this->version != "1.1")
 	{
 		this->ret = 400;
-		std::cerr < "BAD HTTP VERSION (" << this->version << ")" << std::endl;
+		std::cerr << "BAD HTTP VERSION (" << this->version << ")" << std::endl;
 		return (this->ret);
 	}
 	return (this->check_method());
@@ -112,7 +112,7 @@ int			Request::check_method()
 
 int			Request::check_port()
 {
-	size_t i = this->headers["Host"].find_frist_of(':');
+	size_t i = this->headers["Host"].find_first_of(':');
 
 	if (i == std::string::npos)
 		this->port = 80;
@@ -134,7 +134,7 @@ std::string	Request::next_line(const std::string &str, size_t &i)
 	j = str.find_first_of('\n', i);
 	ret = str.substr(j, i-1);
 	if (ret[ret.size() - 1] == '\r')
-		pop(ret);
+		pop_str_tail(ret);
 	i = (j == std::string::npos ? j : j + 1);
 	return (ret);
 }
@@ -147,8 +147,80 @@ int			Request::pull(const std::string &str)
 	size_t			i(0);
 
 	this->read_first_line(next_line(str, i));
-	while ((line = nextLine(str, i)) != "\r" && line != "" && this->ret != 400)
+	while ((line = next_line(str, i)) != "\r" && line != "" && this->ret != 400)
 	{
-		key = read_ke
+		key = read_key(line);
+		value = read_value(line);
+		if (this->headers.count(key))
+			this->headers[key] = value;
+		if (key.find("Secret") != std::string::npos)
+			this->env_for_cgi[format_header_for_cgi(key)] = value;
 	}
+	if (this->headers["Www-Authenticate"] != "")
+		this->env_for_cgi["Www-Authenticate"] = this->headers["Www-Authenticate"];
+	this->set_lang();
+	this->set_body(str.substr(i, std::string::npos));
+	this->find_query();
+	return (this->ret);
+}
+
+void			Request::set_lang()
+{
+	std::vector<std::string>		token;
+	std::string						header;
+	size_t							i;
+
+	if ((header = this->headers["Accept-Language"]) != "")
+	{
+		token = split(header, ',');
+		for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); it++)
+		{
+			float			weight = 0.0;
+			std::string		lang;
+
+			lang = (*it).substr(0, (*it).find_first_of('-'));
+			strip(lang, ' ');
+			if ((i = lang.find_last_of(';')) != std::string::npos)
+				weight = atof((*it).substr(i + 4).c_str());
+			lang.resize(i > 2 ? 2 : i);
+			this->lang.push_back(std::pair<std::string, float>(lang, weight));
+		}
+		this->lang.sort(compare_langs);
+	}
+}
+
+void			Request::strip_all()
+{
+	strip(this->method, '\n');
+	strip(this->method, '\r');
+	strip(this->method, ' ');
+	strip(this->version, '\n');
+	strip(this->version, '\r');
+	strip(this->version, ' ');
+	strip(this->path, '\n');
+	strip(this->path, '\r');
+	strip(this->path, ' ');
+}
+
+void			Request::find_query()
+{
+	size_t		i;
+
+	i = this->path.find_first_of('?');
+	if (i != std::string::npos)
+	{
+		this->query.assign(this->path, i + 1,std::string::npos);
+		this->path = this->path.substr(0, i);
+	}
+}
+
+std::string		Request::format_header_for_cgi(std::string &key)
+{
+	str_to_upper(key);
+	for (size_t i = 0; i < key.size(); i++)
+	{
+		if (key[i] == '-')
+			key[i] = '_';
+	}
+	return ("HTTP_" + key);
 }

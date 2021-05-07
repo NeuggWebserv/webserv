@@ -65,6 +65,7 @@ public:
 	void	reset_headers();
 	void	strip_all();
 
+
 	static std::vector<std::string>		init_methods();
 
 	class	ExceptionParseError : public std::exception
