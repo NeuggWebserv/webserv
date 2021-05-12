@@ -33,7 +33,7 @@ class ConfigRequest
 		const std::map<int, std::string>			&get_error_page() const;
 		const unsigned long							&get_cli_body_size() const;
 		const std::map<std::string, std::string>	&get_cgi_param() const;
-		const std::string							&get_cgi_path() const;
+		const std::string							&get_cgi_pass() const;
 		const std::set<std::string>					&get_allowed_method() const;
 		const t_listen								&get_host_port() const;
 		const std::string							&get_len() const;
