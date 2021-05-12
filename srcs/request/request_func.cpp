@@ -132,7 +132,7 @@ std::string	Request::next_line(const std::string &str, size_t &i)
 	if (i == std::string::npos)
 		return "";
 	j = str.find_first_of('\n', i);
-	ret = str.substr(j, i-1);
+	ret = str.substr(i, j - i);
 	if (ret[ret.size() - 1] == '\r')
 		pop_str_tail(ret);
 	i = (j == std::string::npos ? j : j + 1);
