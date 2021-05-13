@@ -2,13 +2,34 @@
 
 ServerSocket::ServerSocket(const t_listen& lstn) : lstn(lstn)
 {
+    server_fd = -1;
     memset(address.sin_zero, '\0', sizeof(address.sin_zero));
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = htonl(lstn.host);
     address.sin_port = htons(lstn.port);
 }
 
-ServerSocket::~ServerSocket() {}
+ServerSocket::ServerSocket(const ServerSocket& copy)
+{
+    *this = copy;
+}
+
+ServerSocket::~ServerSocket()
+{
+    if (server_fd < 0)
+        return ;
+    ::close(server_fd);
+    server_fd = -1;
+}
+
+const ServerSocket& ServerSocket::operator=(const ServerSocket& obj)
+{
+    this->server_fd = obj.server_fd;
+    this->lstn = obj.lstn;
+    this->address = obj.address;
+
+    return *this;
+}
 
 void ServerSocket::setup()
 {

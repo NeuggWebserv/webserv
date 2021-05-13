@@ -10,7 +10,10 @@ class ServerSocket
 {
 public:
     ServerSocket(const t_listen& lstn);
+    ServerSocket(const ServerSocket& copy);
     ~ServerSocket();
+
+    const ServerSocket& operator=(const ServerSocket& obj);
 
     void setup();
     int accept(void);

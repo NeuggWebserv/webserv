@@ -9,8 +9,11 @@ class Server
 {
 public:
     Server();
+    Server(const Server& copy);
 
     ~Server();
+
+    const Server& operator=(const Server& obj);
 
     void set_config(const char *filename);
     void set_socket(void);

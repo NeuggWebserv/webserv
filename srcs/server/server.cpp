@@ -1,8 +1,30 @@
 #include "server.hpp"
 
-Server::Server() {};
+Server::Server()
+{
+    max_fd = 0;
+};
 
-Server::~Server() {};
+Server::Server(const Server& copy)
+{
+    *this = copy;
+}
+
+Server::~Server()
+{
+    /* Nothing allocated dynamically */
+};
+
+const Server& Server::operator=(const Server& obj)
+{
+    this->config = obj.config;
+    this->server_socket_mapping = obj.server_socket_mapping;
+    this->fd_status = obj.fd_status;
+    this->fd_size = obj.fd_size;
+    this->max_fd = obj.max_fd;
+
+    return *this;
+}
 
 void Server::set_config(const char *filename)
 {
@@ -14,7 +36,6 @@ void Server::set_socket(void)
     std::vector<t_listen> all_listens = config.get_all_listens();
     FD_ZERO(&fd_status);
     fd_size = all_listens.size();
-    max_fd = 0;
     for (std::vector<t_listen>::iterator it = all_listens.begin();
         it != all_listens.end(); ++it)
     {
