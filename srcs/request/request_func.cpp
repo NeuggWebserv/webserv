@@ -68,7 +68,7 @@ int			Request::read_path(const std::string &content, size_t i)
 		std::cerr << "No Path / HTTP version" << std::endl;
 		return (400);
 	}
-	if ((i == content.find_first_of(' ', j)) == std::string::npos)
+	if ((i = content.find_first_of(' ', j)) == std::string::npos)
 	{
 		this->ret = 400;
 		std::cerr << "No HTTP version" << std::endl;
@@ -89,7 +89,7 @@ int			Request::read_version(const std::string& content, size_t i)
 		return (400);
 	}
 	sub = content.substr(i, i + 4);
-	if (sub.compare("HTTP/") == 0)
+	if (sub.substr(0, 5) == "HTTP/")
 		this->version.assign(content, i + 5, 3);
 	if (this->version != "1.0" && this->version != "1.1")
 	{
@@ -102,7 +102,7 @@ int			Request::read_version(const std::string& content, size_t i)
 
 int			Request::check_method()
 {
-	for (size_t i = 0; i < this->method.size();i++)
+	for (size_t i = 0; i < this->methods.size();i++)
 		if (this->methods[i] == this->method)
 			return (this->ret);
 	std::cerr << "Invalid method requested" << std::endl;

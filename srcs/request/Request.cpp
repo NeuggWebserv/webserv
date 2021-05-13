@@ -1,5 +1,22 @@
 #include "Request.hpp"
 
+std::vector<std::string>		Request::init_methods()
+{
+	std::vector<std::string>	mthds;
+
+	mthds.push_back("GET");
+	mthds.push_back("HEAD");
+	mthds.push_back("POST");
+	mthds.push_back("PUT");
+	mthds.push_back("DELETE");
+	mthds.push_back("OPTIONS");
+	mthds.push_back("TRACE");
+
+	return mthds;
+}
+
+std::vector<std::string>	Request::methods = Request::init_methods();
+
 /*
 **	CANONICAL
 */
@@ -16,9 +33,9 @@ raw(str)
 {
 	this->reset_headers();
 	this->env_for_cgi.clear();
-	this->parse(str);
+	this->pull(str);
 	if (this->ret != 200)
-		throw Request::ExceptionParseError();
+		std::cerr << "Request Parse Error: " << this->ret << std::endl;
 }
 
 Request::~Request()
