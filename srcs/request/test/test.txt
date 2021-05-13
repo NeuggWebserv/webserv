@@ -1,0 +1,30 @@
+Method : GET |	HTTP version : 1.1
+Port : 80
+Path : http://goddaehee.tistory.com/168
+=======header======
+Accept-Charsets: utf-8
+Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+Allow: GET POST
+Auth-Scheme: 
+Authorization: 
+Connection: keep-alive
+Content-Language: 
+Content-Length: 
+Content-Location: 
+Content-Type: 
+Date: 
+Host: goddaehee.tistory.com
+Last-Modified: 
+Location: 
+Referer: http://goddaehee.tistory.com/
+Retry-After: 
+Server: 
+Transfer-Encoding: 
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+Www-Authenticate: 
+
+Request body : hello this is test
+this is next line
+
+another line
+ret: 200
