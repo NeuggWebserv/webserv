@@ -24,8 +24,9 @@
 # include <time.h>
 # include <errno.h>
 # include <dirent.h>
+# include <string.h>
 
-// C system
+// C System
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
@@ -37,6 +38,12 @@
 # include <netinet/in.h>
 # include <arpa/inet.h>
 
+// Defines
+#ifndef PACKET_SIZE
+# define PACKET_SIZE 1400
+#endif
+
+// Typedef
 typedef struct  s_listen
 {
     unsigned    host;

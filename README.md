@@ -1,9 +1,9 @@
-# webserv
+# 👨🏻‍💻Webserv🧑🏼‍💻
 
-### 🔖진행상황 (공부중)
-숙제: 내장함수 공부, socket 프로그래밍 해보기, rfc 읽어오기
+### 🔖Progress
+숙제: Response part reading, Request Building
 
-### 추가사항
+### More details
 소스트리를 이용한 프로젝트 진행
 
 ### 📚reference
@@ -12,3 +12,4 @@
 <https://www.zerocho.com/category/HTTP/post/5b3ba2d0b3dabd001b53b9db> - http common header<br>
 <https://bodamnury.tistory.com/38> - struct stat<br>
 <https://developer.mozilla.org/ko/docs/Web/HTTP/Methods> - http method<br>
+<https://server-talk.tistory.com/308> - CGI and Fast CGI<br>
