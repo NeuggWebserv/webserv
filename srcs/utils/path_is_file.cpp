@@ -15,7 +15,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-int		pathIsFile(const std::string &path)
+int		path_is_file(const std::string &path)
 {
 	struct stat s;
 	if (stat(path.c_str(), &s) == 0)
