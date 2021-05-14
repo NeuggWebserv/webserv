@@ -13,10 +13,20 @@
 #include "Config.hpp"
 #include "ConfigServer.hpp"
 #include "ConfigReader.hpp"
+#include "ConfigRequest.hpp"
 
-Config::Config(std::string Path)
+Config::Config(std::string path)
 {
-	//Reader doesn't exist yet.
+	ConfigServer	server;
+	fileVector		file;
+
+	file = ConfigReader::read_file(path.c_str());
+	if (file.empty())
+		throw ConfigReader::FileNotFoundException();
+	unsigned int	index = 2;
+	if (!server.parse_server(index, file))
+		throw ConfigServer::ExceptionInvalidArguments();
+	ConfigServer::default_server = server;
 }
 
 Config::Config(Config const &src)
@@ -76,6 +86,23 @@ int		Config::pull(const char *filename)
 	return (0);
 }
 
+ConfigRequest	          Config::get_config_for_request(t_listen const address,\
+							std::string const uri, std::string host_name, const std::string& method,\
+							Request &request) const
+{
+	ConfigServer	server;
+	std::string		location_path;
+
+	host_name = host_name.substr(0, host_name.find_last_of(':'));
+	this->get_server_for_request(server, address, host_name);
+	server = server.get_location_for_request(uri, location_path);
+	if (*(--location_path.end()) == '/')
+		location_path.resize(location_path.size() - 1);
+	ConfigRequest config(server, request, uri, method, location_path);
+	config.set_host_port(address);
+	return config;
+}
+
 bool		Config::get_server_for_request(ConfigServer &ret, t_listen const address, std::string const host_name) const 
 {
 	std::vector<ConfigServer>	possible_servers;
@@ -127,3 +154,11 @@ std::vector<t_listen>		Config::get_all_listens() const
 	}
 	return ret;
 }
+
+std::ostream				&operator<<(std::ostream &out, const Config &config)
+{
+	for (size_t i = 0; i < config.get_server_list().size(); i++)
+	{
+		out << config.get_server_list()[i] << std::endl << std::endl;
+	}
+	return out;

@@ -15,6 +15,7 @@
 
 #include "webserv.hpp"
 #include "Config.hpp"
+#include "Request.hpp"
 
 class ConfigRequest
 {
@@ -22,7 +23,7 @@ class ConfigRequest
 		ConfigRequest(void);
 		ConfigRequest(ConfigRequest const &cr);
 		ConfigRequest(ConfigServer &config, Request &request, const std::string &path,
-		const std::string &method, std::string &location_name);
+						const std::string &method, std::string &location_name);
 		virtual ~ConfigRequest(void);
 
 		ConfigRequest								&operator=(ConfigRequest const &cr);
@@ -50,7 +51,7 @@ class ConfigRequest
 		std::string									content_location;
 		std::string									path;
 		std::map<int, std::string>					error_page;
-		unsigned long								cli_body_buf_size;
+		unsigned long								cli_body_size;
 		std::map<std::string, std::string>			cgi_param;
 		std::string									cgi_pass;
 		std::set<std::string>						allowed_method;

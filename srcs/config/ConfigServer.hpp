@@ -57,12 +57,12 @@ class ConfigServer
 		};
 
 		// *	OTHERS
+		static ConfigServer					default_server;
 		int									parse_server(unsigned int &i, std::vector<std::string> &file);
 		void								pass_members(ConfigServer &server) const;
 		static ConfigServer					init_default_server(const char *filename);
 		static ConfigServer					&get_default_server();
-		// RETURN CONFIG ACCORDING TO URI
-		// ConfigServer						get_location_for_request(std::string const path, std::string &locationPath);
+		ConfigServer						get_location_for_request(std::string const path, std::string &locationPath);
 
 		// *	FOR TEST
 		friend std::ostream					&operator<<(std::ostream &out, const ConfigServer &server);
@@ -106,7 +106,6 @@ class ConfigServer
 		static parseMap 					init_location_map();
 
 		// *	OTHERS
-		static ConfigServer					default_server;
 		int									parse_location(unsigned int &i, std::vector<std::string> &file);
 
 };

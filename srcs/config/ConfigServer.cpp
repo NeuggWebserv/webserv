@@ -44,18 +44,12 @@ ConfigServer				ConfigServer::init_default_server(const char *filename)
 
 	file = ConfigReader::read_file(filename);
 	if (file.empty())
-	{
-		// std::cerr << RED << "Could not open default file at location [" << filename << "]" << RESET << std::endl;
 		throw ConfigReader::FileNotFoundException();
-	}
 	Config::fileVector	begin;
 	file.insert(file.begin(), begin.begin(), begin.end());
 	unsigned int	index = 2;
 	if (!server.parse_server(index, file))
-	{
-		// std::cerr << RED << "Invalid default config file." << RESET << std::endl;
 		throw ConfigServer::ExceptionInvalidArguments();
-	}
 	ConfigServer::default_server = server;
 	return server;
 }
@@ -430,7 +424,7 @@ std::ostream	&operator<<(std::ostream &out, const ConfigServer &server)
 	out << "alias: " << server.alias << std::endl;
 	for (std::map<std::string, ConfigServer>::const_iterator i = server.location.begin(); i != server.location.end(); i++)
 	{
-		out << std::endl << "LOCATION " << i->first << std::endl;
+		out << std::endl << "[ LOCATION " << i->first << " ]" << std::endl;
 		out << i->second << std::endl;
 	}
 	return out;
@@ -513,37 +507,37 @@ ConfigServer						&ConfigServer::get_default_server()
 }
 
 // GET CONFIG FOR HTTP REQUEST
-// ConfigServer						ConfigServer::get_location_for_request(std::string const path, std::string &ret_location_path)
-// {
-// 	std::string::size_type							try_len = path.length();
-// 	std::map<std::string, ConfigServer>::iterator	iter;
-// 	std::string										try_location;
+ConfigServer						ConfigServer::get_location_for_request(std::string const path, std::string &ret_location_path)
+{
+	std::string::size_type							try_len = path.length();
+	std::map<std::string, ConfigServer>::iterator	iter;
+	std::string										try_location;
 
-// 	if (!try_len)
-// 		return *this;
-// 	if (!this->location.empty())
-// 	{
-// 		do {
-// 			try_location = path.substr(0, try_len);
-// 			iter = this->location.find(try_location);
-// 			if (iter != this->location.end() && iter->first[0] != '*')
-// 			{
-// 				ret_location_path = try_location;
-// 				return iter->second.get_location_for_request(path, ret_location_path);
-// 			}
-// 			try_len--;
-// 		} while (try_len);
-// 		for (std::map<std::string, ConfigServer>::iterator i = this->location.begin(); i != this->location.end(); i++)
-// 		{
-// 			if (i->first[0] == '*')
-// 			{
-// 				std::string	suffix = i->first.substr(1);
-// 				if (path.length() > suffix.length() && !path.compare(path.length() - suffix.length(), suffix.length(), suffix))
-// 				{
-// 					return i->second.get_location_for_request(path, ret_location_path);
-// 				}
-// 			}
-// 		}
-// 	}
-// 	return (*this);
-// }
+	if (!try_len)
+		return *this;
+	if (!this->location.empty())
+	{
+		do {
+			try_location = path.substr(0, try_len);
+			iter = this->location.find(try_location);
+			if (iter != this->location.end() && iter->first[0] != '*')
+			{
+				ret_location_path = try_location;
+				return iter->second.get_location_for_request(path, ret_location_path);
+			}
+			try_len--;
+		} while (try_len);
+		for (std::map<std::string, ConfigServer>::iterator i = this->location.begin(); i != this->location.end(); i++)
+		{
+			if (i->first[0] == '*')
+			{
+				std::string	suffix = i->first.substr(1);
+				if (path.length() > suffix.length() && !path.compare(path.length() - suffix.length(), suffix.length(), suffix))
+				{
+					return i->second.get_location_for_request(path, ret_location_path);
+				}
+			}
+		}
+	}
+	return (*this);
+}
