@@ -2,7 +2,11 @@
 #define TEST_HPP
 
 #include "Request.hpp"
+#include "Config.hpp"
+#include "ConfigRequest.hpp"
 #include <iostream>
+
+#define CONF_PATH "./test.conf"
 
 #define REQUEST "GET http://goddaehee.tistory.com/168 HTTP/1.1\r\n\
 Host: goddaehee.tistory.com\r\n\
