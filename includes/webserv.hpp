@@ -42,6 +42,7 @@
 # define PACKET_SIZE 1400
 #endif
 
+// Typedef
 typedef struct  s_listen
 {
     unsigned    host;
