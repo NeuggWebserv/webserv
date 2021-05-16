@@ -12,4 +12,3 @@
 <https://www.zerocho.com/category/HTTP/post/5b3ba2d0b3dabd001b53b9db> - http common header<br>
 <https://bodamnury.tistory.com/38> - struct stat<br>
 <https://developer.mozilla.org/ko/docs/Web/HTTP/Methods> - http method<br>
-<https://server-talk.tistory.com/308> - CGI and Fast CGI<br>
