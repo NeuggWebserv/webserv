@@ -7,8 +7,8 @@
 #include "response_header.hpp"
 #include "Request.hpp"
 #include "ConfigRequest.hpp"
-#include "CgiHandler.hpp"
-#include "AutoIndexGenerator.hpp"
+#include "Cgi.hpp"
+#include "AutoIndex.hpp"
 
 class Response
 {
@@ -23,15 +23,15 @@ public:
 	std::string		get_response(void);
 
 	// Member functions
-	void			call(Request & request, RequestConfig & requestConf);
+	void			call(Request & request, ConfigRequest & requestConf);
 
-	void			get_method(Request & request, RequestConfig & requestConf);
-	void			head_method(Request & request, RequestConfig & requestConf);
-	void			post_method(Request & request, RequestConfig & requestConf);
-	void			put_method(Request & request, RequestConfig & requestConf);
-	void			delete_method(Request & request, RequestConfig & requestConf);
-	void			options_method(Request & request, RequestConfig & requestConf);
-	void			trace_method(Request & request, RequestConfig & requestConf);
+	void			get_method(Request & request, ConfigRequest & requestConf);
+	void			head_method(Request & request, ConfigRequest & requestConf);
+	void			post_method(Request & request, ConfigRequest & requestConf);
+	void			put_method(Request & request, ConfigRequest & requestConf);
+	void			delete_method(Request & request, ConfigRequest & requestConf);
+	void			options_method(Request & request, ConfigRequest & requestConf);
+	void			trace_method(Request & request, ConfigRequest & requestConf);
 
 	int				read_content(void);
 	int				write_content(std::string content);
@@ -47,8 +47,8 @@ private:
 	t_listen					host_port;
 	std::map<int, std::string>	error_map;
 
-	static std::map<std::string, void (Response::*)(Request &, RequestConfig &)>	method_map;
-	static std::map<std::string, void (Response::*)(Request &, RequestConfig &)>	init_methods();
+	static std::map<std::string, void (Response::*)(Request &, ConfigRequest &)>	method_map;
+	static std::map<std::string, void (Response::*)(Request &, ConfigRequest &)>	init_methods();
 };
 
 #endif

@@ -62,7 +62,7 @@ std::ostream&	operator<<(std::ostream& os, const Request& re)
 	os << "Metohd : " << re.get_method() << " |\tHTTP version : " << re.get_version() << "\n" \
 	<< "Port : " << re.get_port() << '\n' << "Path : " << re.get_path() << '\n';
 
-	for (it = re.get_headers(); it != re.get_headers().end(); it++)
+	for (it = re.get_headers().begin(); it != re.get_headers().end(); it++)
 		os << it->first << ": " << it->second << '\n';
 	os << '\n' << "Request body : " << re.get_body() << '\n';
 

@@ -16,7 +16,7 @@
 ConfigRequest::ConfigRequest(void) {}
 ConfigRequest::~ConfigRequest(void) {}
 ConfigRequest::ConfigRequest(ConfigServer &config, Request &request, const std::string &path,
-							const std::string &method, std::string location_name)
+							const std::string &method, std::string &location_name)
 : error_page(config.get_error_page()), cli_body_size(config.get_client_body_buffer_size())
 , cgi_param(config.get_cgi_param()), cgi_pass(config.get_cgi_pass())
 , allowed_method(config.get_allowed_methods()), len("")
@@ -67,7 +67,7 @@ ConfigRequest::ConfigRequest(ConfigRequest const &src)
 		this->content_location = src.content_location;
 		this->path = src.path;
 		this->error_page = src.error_page;
-		this->cli_body_buf_size = src.cli_body_buf_size;
+		this->cli_body_size = src.cli_body_size;
 		this->cgi_param = src.cgi_param;
 		this->cgi_pass = src.cgi_pass;
 		this->allowed_method = src.allowed_method;
@@ -132,13 +132,13 @@ const t_listen								&ConfigRequest::get_host_port() const
 }
 const std::string							&ConfigRequest::get_len() const
 {
-	return (this->lang);
+	return (this->len);
 }
 const std::vector<std::string>				&ConfigRequest::get_index() const
 {
 	return (this->index);
 }
-const bool									&ConfigRequest::get_auto_index() const
+const bool									&ConfigRequest::get_autoindex() const
 {
 	return (this->auto_index);
 }
@@ -150,13 +150,13 @@ void										ConfigRequest::set_path(int code)
 	this->path = "./files/error/";
 	this->path += to_string(code) + ".html";
 }
-void										ConfigRequest::set_path(const std::string&)
+void										ConfigRequest::set_path(const std::string& src)
 {
-	this->path = path;
+	this->path = src;
 }
-void										ConfigRequest::set_content_location(const std::string&)
+void										ConfigRequest::set_content_location(const std::string& src)
 {
-	this->content_location = path;
+	this->content_location = src;
 }
 void										ConfigRequest::set_host_port(const t_listen hostport)
 {

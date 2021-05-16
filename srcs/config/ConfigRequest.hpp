@@ -39,7 +39,7 @@ class ConfigRequest
 		const t_listen								&get_host_port() const;
 		const std::string							&get_len() const;
 		const std::vector<std::string>				&get_index() const;
-		const bool									&get_auto_index() const;
+		const bool									&get_autoindex() const;
 
 		void										set_path(int code);
 		void										set_path(const std::string&);

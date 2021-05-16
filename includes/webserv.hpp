@@ -7,6 +7,7 @@
 # include <string>
 # include <limits>
 # include <sstream>
+# include <fstream>
 
 // CPP Containers
 # include <algorithm>
@@ -69,6 +70,8 @@ std::string&				str_to_lower(std::string& str);
 std::string&				str_to_upper(std::string& str);
 std::string&				pop_str_tail(std::string& str);
 std::vector<std::string>	split(const std::string &str, char c);
+int		path_is_file(const std::string &path);
+
 
 //				Compare
 bool						compare_langs(const std::pair<std::string, float> first, const std::pair<std::string, float> second);

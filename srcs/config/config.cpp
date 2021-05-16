@@ -83,6 +83,7 @@ int		Config::pull(const char *filename)
 			return (1);
 		}
 	}
+	// std::cout << this->server_list[0] << std::endl;
 	return (0);
 }
 
@@ -162,3 +163,4 @@ std::ostream				&operator<<(std::ostream &out, const Config &config)
 		out << config.get_server_list()[i] << std::endl << std::endl;
 	}
 	return out;
+}

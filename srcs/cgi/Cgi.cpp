@@ -54,7 +54,7 @@ void	Cgi::init_env(Request &request, ConfigRequest &config)
 	this->env["PATH_INFO"] = request.get_path();
 	this->env["PATH_TRANSLATED"] = request.get_path();
 	this->env["QUERY_STRING"] = request.get_query();
-	this->env["REMOTEaddr"] = to_strig(config.get_host_port().host);
+	this->env["REMOTEaddr"] = to_string(config.get_host_port().host);
 	this->env["REMOTE_IDENT"] = headers["Authorization"];
 	this->env["REMOTE_USER"] = headers["Authorization"];
 	this->env["REQUEST_URI"] = request.get_path() + request.get_query();
@@ -128,7 +128,7 @@ std::string	Cgi::execute_cgi(const std::string &script_name)
 		dup2(fd_out, STDOUT_FILENO);
 		execve(script_name.c_str(), nll, env);
 		std::cerr<< "Execve crashed." << std::endl;
-		wrtie(STDOUT_FILENO, "Status; 500\r\n\r\n", 15);
+		write(STDOUT_FILENO, "Status; 500\r\n\r\n", 15);
 	}
 	else
 	{

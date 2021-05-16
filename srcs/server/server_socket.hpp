@@ -1,7 +1,9 @@
 #ifndef SERVER_SOCKET_HPP
 # define SERVER_SOCKET_HPP
 
-# include "config.hpp"
+# include "Config.hpp"
+# include "ConfigRequest.hpp"
+# include "Response.hpp"
 # include "webserv.hpp"
 
 class Config;
@@ -22,6 +24,7 @@ public:
     void do_request(int client_fd, const Config& config);
     void close_client_fd(int client_fd);
     int get_fd() const;
+    void process_chunk(int client_fd);
 
 private:
     ServerSocket();

@@ -260,8 +260,11 @@ ResponseHeader::~ResponseHeader(void)
 ResponseHeader & ResponseHeader::operator=(const ResponseHeader & src)
 {
 	//		forbidden
+	(void)src;
+	return *this;
 }
 ResponseHeader::ResponseHeader(const ResponseHeader & src)
 {
 	//		forbidden
+	(void)src;
 }

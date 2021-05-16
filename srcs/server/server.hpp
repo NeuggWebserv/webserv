@@ -2,7 +2,7 @@
 # define SERVER_HPP
 
 # include "server_socket.hpp"
-# include "config.hpp"
+# include "Config.hpp"
 # include "webserv.hpp"
 
 class Server

@@ -46,7 +46,7 @@ private:
 	std::string					transfer_encoding;
 	std::string					www_authenticate;
 	static std::map<int, std::string>	errors;
-	std::map<int, std::string>			init_error_map();
+	static std::map<int, std::string>	init_error_map();
 
 	//		Don't use
 	ResponseHeader(const ResponseHeader & src);

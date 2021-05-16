@@ -119,7 +119,7 @@ int			Request::check_port()
 	else
 	{
 		std::string tmp(this->headers["Host"], i + 1);
-		this->port = ft_atoi(tmp.c_str());
+		this->port = std::atoi(tmp.c_str());
 	}
 	return (this->port);
 }

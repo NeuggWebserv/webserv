@@ -1,8 +1,8 @@
 #include "Response.hpp"
 
-std::map<std::string, void (Response::*)(Request &, RequestConfig &)>	Response::init_methods()
+std::map<std::string, void (Response::*)(Request &, ConfigRequest &)>	Response::init_methods()
 {
-	std::map<std::string, void (Response::*)(Request &, RequestConfig &)> map;
+	std::map<std::string, void (Response::*)(Request &, ConfigRequest &)> map;
 
 	map["GET"] = &Response::get_method;
 	map["HEAD"] = &Response::head_method;
@@ -15,29 +15,29 @@ std::map<std::string, void (Response::*)(Request &, RequestConfig &)>	Response::
 	return map;
 }
 
-std::map<std::string, void (Response::*)(Request &, RequestConfig &)> Response::method = Response::init_methods();
+std::map<std::string, void (Response::*)(Request &, ConfigRequest &)> Response::method_map = Response::init_methods();
 
 // Member functions
 
-void			Response::call(Request & request, RequestConfig & requestConf)
+void			Response::call(Request & request, ConfigRequest & requestConf)
 {
 	error_map = requestConf.get_error_page();
 	is_autoindex = requestConf.get_autoindex();
 	code = request.get_ret();
-	hostPort.host = requestConf.get_host_port().host;
-	hostPort.port = requestConf.get_host_port().port;
+	host_port.host = requestConf.get_host_port().host;
+	host_port.port = requestConf.get_host_port().port;
 	path = requestConf.get_path();
 
-	if (requestConf.get_allowed_methods().find(request.get_method()) == requestConf.get_allowed_methods().end())
-		_code = 405;
-	else if (requestConf.get_client_body_buffer_size() < request.get_body().size())
-		_code = 413;
+	if (requestConf.get_allowed_method().find(request.get_method()) == requestConf.get_allowed_method().end())
+		code = 405;
+	else if (requestConf.get_cli_body_size() < request.get_body().size())
+		code = 413;
 
-	if (_code == 405 || _code == 413)
+	if (code == 405 || code == 413)
 	{
 		ResponseHeader	head;
 
-		response = head.not_allowed(requestConf.get_allowed_methods(), requestConf.get_content_location(), _code, requestConf.get_lang()) + "\r\n";
+		response = head.not_allowed(requestConf.get_allowed_method(), requestConf.get_content_location(), code, requestConf.get_len()) + "\r\n";
 		return ;
 	}
 
@@ -46,25 +46,25 @@ void			Response::call(Request & request, RequestConfig & requestConf)
 }
 
 // Methods
-void			Response::get_method(Request & request, RequestConfig & requestConf)
+void			Response::get_method(Request & request, ConfigRequest & requestConf)
 {
 	ResponseHeader	head;
 
 	if (requestConf.get_cgi_pass() != "")
 	{
-		CgiHandler	cgi(request, requestConf);
+		Cgi			cgi(request, requestConf);
 		size_t		i = 0;
 		size_t		j = response.size() - 2;
 
-		response = cgi.executeCgi(requestConf.get_cgi_pass());
+		response = cgi.execute_cgi(requestConf.get_cgi_pass());
 
 		while (response.find("\r\n\r\n", i) != std::string::npos || response.find("\r\n", i) == i)
 		{
 			std::string	str = response.substr(i, response.find("\r\n", i) - i);
 			if (str.find("Status: ") == 0)
-				_code = std::atoi(str.substr(8, 3).c_str());
+				code = std::atoi(str.substr(8, 3).c_str());
 			else if (str.find("Content-type: ") == 0)
-				_type = str.substr(14, str.size());
+				type = str.substr(14, str.size());
 			i += str.size() + 2;
 		}
 		while (response.find("\r\n", j) == j)
@@ -72,44 +72,44 @@ void			Response::get_method(Request & request, RequestConfig & requestConf)
 
 		response = response.substr(i, j - i);
 	}
-	else if  (_code == 200)
-		_code = readContent();
+	else if  (code == 200)
+		code = read_content();
 	else
-		response = this->readHtml(_errorMap[_code]);
-	if (_code == 500)
-		response = this->readHtml(_errorMap[_code]);
+		response = this->read_html(error_map[code]);
+	if (code == 500)
+		response = this->read_html(error_map[code]);
 
-	response = head.getHeader(response.size(), _path, _code, _type, requestConf.get_content_location(), requestConf.get_lang()) + "\r\n" + response;
+	response = head.get_header(response.size(), path, code, type, requestConf.get_content_location(), requestConf.get_len()) + "\r\n" + response;
 }
 
-void			Response::head_method(Request & request, RequestConfig & requestConf)
+void			Response::head_method(Request & request, ConfigRequest & requestConf)
 {
 	ResponseHeader	head;
 	(void)request;
 
-	_code = readContent();
-	response = head.getHeader(response.size(), _path, _code, _type, requestConf.get_content_location(), requestConf.get_lang()) + "\r\n";
+	code = read_content();
+	response = head.get_header(response.size(), path, code, type, requestConf.get_content_location(), requestConf.get_len()) + "\r\n";
 }
 
-void			Response::post_method(Request & request, RequestConfig & requestConf)
+void			Response::post_method(Request & request, ConfigRequest & requestConf)
 {
 	ResponseHeader	head;
 
 	if (requestConf.get_cgi_pass() != "")
 	{
-		CgiHandler	cgi(request, requestConf);
+		Cgi			cgi(request, requestConf);
 		size_t		i = 0;
 		size_t		j = response.size() - 2;
 
-		response = cgi.executeCgi(requestConf.get_cgi_pass());
+		response = cgi.execute_cgi(requestConf.get_cgi_pass());
 
 		while (response.find("\r\n\r\n", i) != std::string::npos || response.find("\r\n", i) == i)
 		{
 			std::string	str = response.substr(i, response.find("\r\n", i) - i);
 			if (str.find("Status: ") == 0)
-				_code = std::atoi(str.substr(8, 3).c_str());
+				code = std::atoi(str.substr(8, 3).c_str());
 			else if (str.find("Content-Type: ") == 0)
-				_type = str.substr(14, str.size());
+				type = str.substr(14, str.size());
 			i += str.size() + 2;
 		}
 		while (response.find("\r\n", j) == j)
@@ -119,80 +119,80 @@ void			Response::post_method(Request & request, RequestConfig & requestConf)
 	}
 	else
 	{
-		_code = 204;
+		code = 204;
 		response = "";
 	}
-	if (_code == 500)
-		response = this->readHtml(_errorMap[_code]);
-	response = head.getHeader(response.size(), _path, _code, _type, requestConf.get_content_location(), requestConf.get_lang()) + "\r\n" + response;
+	if (code == 500)
+		response = this->read_html(error_map[code]);
+	response = head.get_header(response.size(), path, code, type, requestConf.get_content_location(), requestConf.get_len()) + "\r\n" + response;
 }
 
-void			Response::put_method(Request & request, RequestConfig & requestConf)
+void			Response::put_method(Request & request, ConfigRequest & requestConf)
 {
 	ResponseHeader	head;
 	std::string		content;
 
 	content = request.get_body();
 	response = "";
-	_code = writeContent(content);
-	if (_code != 201 && _code != 204)
-		response = this->readHtml(_errorMap[_code]);
-	response = head.getHeader(response.size(), _path, _code, _type, requestConf.get_content_location(), requestConf.get_lang()) + "\r\n" + response;
+	code = write_content(content);
+	if (code != 201 && code != 204)
+		response = this->read_html(error_map[code]);
+	response = head.get_header(response.size(), path, code, type, requestConf.get_content_location(), requestConf.get_len()) + "\r\n" + response;
 }
 
-void			Response::delete_method(Request & request, RequestConfig & requestConf)
+void			Response::delete_method(Request & request, ConfigRequest & requestConf)
 {
 	ResponseHeader	head;
 	(void)request;
 
 	response = "";
-	if (pathIsFile(_path))
+	if (path_is_file(path))
 	{
-		if (remove(_path.c_str()) == 0)
-			_code = 204;
+		if (remove(path.c_str()) == 0)
+			code = 204;
 		else
-			_code = 403;
+			code = 403;
 	}
 	else
-		_code = 404;
-	if (_code == 403 || _code == 404)
-		response = this->readHtml(_errorMap[_code]);
-	response = head.getHeader(response.size(), _path, _code, _type, requestConf.get_content_location(), requestConf.get_lang()) + "\r\n" + response;
+		code = 404;
+	if (code == 403 || code == 404)
+		response = this->read_html(error_map[code]);
+	response = head.get_header(response.size(), path, code, type, requestConf.get_content_location(), requestConf.get_len()) + "\r\n" + response;
 
 
 }
 
-void			Response::options_method(Request & request, RequestConfig & requestConf)
+void			Response::options_method(Request & request, ConfigRequest & requestConf)
 {
 	ResponseHeader	head;
 	(void)request;
 
-	_code = readContent();
-	response = head.getHeader(response.size(), _path, _code, _type, requestConf.get_content_location(), requestConf.get_lang()) + "\r\n";
+	code = read_content();
+	response = head.get_header(response.size(), path, code, type, requestConf.get_content_location(), requestConf.get_len()) + "\r\n";
 
 }
 
-void			Response::trace_method(Request & request, RequestConfig & requestConf)
+void			Response::trace_method(Request & request, ConfigRequest & requestConf)
 {
 	(void)requestConf;
-	response = request.getRaw();
+	response = request.get_raw();
 }
 
 // Utils
 
-int				Response::readContent(void)
+int				Response::read_content(void)
 {
 	std::ifstream		file;
 	std::stringstream	buffer;
 
 	response = "";
 
-	if (pathIsFile(_path))
+	if (path_is_file(path))
 	{
-		file.open(_path.c_str(), std::ifstream::in);
+		file.open(path.c_str(), std::ifstream::in);
 		if (file.is_open() == false)
 		{
-			response = this->readHtml(_errorMap[403]);
+			response = this->read_html(error_map[403]);
 			return (403);
 		}
 
@@ -201,35 +201,35 @@ int				Response::readContent(void)
 
 		file.close();
 	}
-	else if (_isAutoIndex) {
-		buffer << AutoIndexGenerator::getPage(_path.c_str(),\
-			to_string(_hostPort.host), _hostPort.port);
+	else if (is_autoindex) {
+		buffer << AutoIndex::get_page(path.c_str(),\
+			to_string(host_port.host), host_port.port);
 		response = buffer.str();
-		_type = "text/html";
+		type = "text/html";
 	}
 	else
 	{
-		response = this->readHtml(_errorMap[404]);
+		response = this->read_html(error_map[404]);
 		return (404);
 	}
 
 	return (200);
 }
 
-int				Response::writeContent(std::string content)
+int				Response::write_content(std::string content)
 {
 	std::ofstream	file;
 
-	if (pathIsFile(_path))
+	if (path_is_file(path))
 	{
-		file.open(_path.c_str());
+		file.open(path.c_str());
 		file << content;
 		file.close();
 		return (204);
 	}
 	else
 	{
-		file.open(_path.c_str(), std::ofstream::out | std::ofstream::trunc);
+		file.open(path.c_str(), std::ofstream::out | std::ofstream::trunc);
 		if (file.is_open() == false)
 			return (403);
 
@@ -239,12 +239,12 @@ int				Response::writeContent(std::string content)
 	}
 }
 
-std::string		Response::readHtml(const std::string& path)
+std::string		Response::read_html(const std::string& path)
 {
 	std::ofstream		file;
 	std::stringstream	buffer;
 
-	if (pathIsFile(path))
+	if (path_is_file(path))
 	{
 		file.open(path.c_str(), std::ifstream::in);
 		if (file.is_open() == false)
@@ -252,7 +252,7 @@ std::string		Response::readHtml(const std::string& path)
 
 		buffer << file.rdbuf();
 		file.close();
-		_type = "text/html";
+		type = "text/html";
 
 		return (buffer.str());
 	}
@@ -260,7 +260,7 @@ std::string		Response::readHtml(const std::string& path)
 		return ("<!DOCTYPE html>\n<html><title>40404</title><body>There was an error finding your error page</body></html>\n");
 }
 
-int				Response::fileExists(std::string path) //deprecated, replaced by ::pathIsFile()
+int				Response::file_exists(std::string path) //deprecated, replaced by ::path_is_file()
 {
 	struct stat		stats;
 
@@ -271,7 +271,7 @@ int				Response::fileExists(std::string path) //deprecated, replaced by ::pathIs
 
 // Getter functions
 
-std::string		Response::getResponse(void)
+std::string		Response::get_response(void)
 {
 	return (response);
 }
@@ -281,8 +281,8 @@ std::string		Response::getResponse(void)
 Response & Response::operator=(const Response & src)
 {
 	response = src.response;
-	_path = src._path;
-	_code = src._code;
+	path = src.path;
+	code = src.code;
 	return (*this);
 }
 

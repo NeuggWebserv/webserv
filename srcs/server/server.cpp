@@ -36,6 +36,7 @@ void Server::set_socket(void)
     std::vector<t_listen> all_listens = config.get_all_listens();
     FD_ZERO(&fd_status);
     fd_size = all_listens.size();
+    max_fd = 0;
     for (std::vector<t_listen>::iterator it = all_listens.begin();
         it != all_listens.end(); ++it)
     {

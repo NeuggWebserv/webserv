@@ -16,10 +16,7 @@ ServerSocket::ServerSocket(const ServerSocket& copy)
 
 ServerSocket::~ServerSocket()
 {
-    if (server_fd < 0)
-        return ;
-    ::close(server_fd);
-    server_fd = -1;
+    
 }
 
 const ServerSocket& ServerSocket::operator=(const ServerSocket& obj)
@@ -34,6 +31,7 @@ const ServerSocket& ServerSocket::operator=(const ServerSocket& obj)
 void ServerSocket::setup()
 {
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    // std::cout << "server_fd in server socket : " << server_fd << std::endl;
     if (server_fd < 0)
         throw std::logic_error("Error setup: Cannot create socket");
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
@@ -121,8 +119,48 @@ int ServerSocket::recv(int client_fd)
 
 void ServerSocket::do_request(int client_fd, const Config& config)
 {
-    /* For test */
-    client_msg_mapping[client_fd] = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
+	ConfigRequest	requestConf;
+	Response		response;
+	std::string		recvd = "";
+
+	if (client_msg_mapping[client_fd].find("Transfer-Encoding: chunked") != std::string::npos &&
+		client_msg_mapping[client_fd].find("Transfer-Encoding: chunked") < client_msg_mapping[client_fd].find("\r\n\r\n"))
+		this->process_chunk(client_fd);
+	if (client_msg_mapping[client_fd] != "")
+	{
+		Request			request(client_msg_mapping[client_fd]);
+
+		if (request.get_ret() != 200)
+			request.set_method("GET");
+
+		requestConf = config.get_config_for_request(this->lstn,  request.get_path(), request.get_headers().at("Host"), request.get_method(), request);
+
+		response.call(request, requestConf);
+
+		client_msg_mapping.erase(client_fd);
+		client_msg_mapping.insert(std::make_pair(client_fd, response.get_response()));
+	}
+}
+
+void		ServerSocket::process_chunk(int client_fd)
+{
+	std::string	head = client_msg_mapping[client_fd].substr(0, client_msg_mapping[client_fd].find("\r\n\r\n"));
+	std::string	chunks = client_msg_mapping[client_fd].substr(client_msg_mapping[client_fd].find("\r\n\r\n") + 4, client_msg_mapping[client_fd].size() - 1);
+	std::string	subchunk = chunks.substr(0, 100);
+	std::string	body = "";
+	int			chunksize = strtol(subchunk.c_str(), NULL, 16);
+	size_t		i = 0;
+
+	while (chunksize)
+	{
+		i = chunks.find("\r\n", i) + 2;
+		body += chunks.substr(i, chunksize);
+		i += chunksize + 2;
+		subchunk = chunks.substr(i, 100);
+		chunksize = strtol(subchunk.c_str(), NULL, 16);
+	}
+
+	client_msg_mapping[client_fd] = head + "\r\n\r\n" + body + "\r\n\r\n";
 }
 
 void ServerSocket::close_client_fd(int client_fd)
