@@ -42,7 +42,6 @@
 # define PACKET_SIZE 1400
 #endif
 
-// Typedef
 typedef struct  s_listen
 {
     unsigned    host;
@@ -54,5 +53,8 @@ typedef struct s_error_page
 	std::vector<int>    error_codes;
 	std::string         uri;
 }               t_error_page;
+
+// string_utils
+bool is_suffix(const std::string& src, const std::string& suffix);
 
 #endif /* WEBSERV_HPP */
