@@ -58,7 +58,8 @@ void Server::run(void)
     fd_set reading_status;
     fd_set writing_status;
     struct timeval timeout;
-    int ret;
+    int ret, n = 0;
+    std::string	dot[3] = {".  ", ".. ", "..."};
 
     while (1)
     {
@@ -72,7 +73,9 @@ void Server::run(void)
             for (std::vector<int>::const_iterator it = ready_to_send.begin();
                 it != ready_to_send.end(); ++it)
                 FD_SET(*it, &writing_status);
-            std::cout << "Waiting connection\n";
+            std::cout << "\rWaiting on a connection" << dot[n++] << std::flush;
+            if (n == 3)
+				n = 0;
             ret = select(max_fd + 1, &reading_status, &writing_status, NULL, &timeout);
         }
         if (ret > 0)
