@@ -1,4 +1,4 @@
-#include "response_header.hpp"
+#include "ResponseHeader.hpp"
 
 std::map<int, std::string>	ResponseHeader::errors = init_error_map();
 

@@ -12,9 +12,9 @@ MAIN = webserv
 
 CONFIG = Config ConfigReader ConfigRequest ConfigServer ConfigUtil
 
-SERVER = server server_socket
+SERVER = Server ServerSocket
 
-RESPONSE = Response response_header
+RESPONSE = Response ResponseHeader
 
 REQUEST = Request request_func
 

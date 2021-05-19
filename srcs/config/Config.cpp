@@ -162,3 +162,4 @@ std::ostream				&operator<<(std::ostream &out, const Config &config)
 		out << config.get_server_list()[i] << std::endl << std::endl;
 	}
 	return out;
+}

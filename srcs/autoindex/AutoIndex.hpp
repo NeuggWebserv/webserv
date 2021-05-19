@@ -8,7 +8,8 @@ class AutoIndex
 public:
     AutoIndex();
     AutoIndex(const AutoIndex& copy);
-    virtual ~AutoIndex();
+    
+    ~AutoIndex();
 
     const AutoIndex& operator=(const AutoIndex& obj);
 

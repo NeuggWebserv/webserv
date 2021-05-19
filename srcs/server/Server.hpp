@@ -1,7 +1,7 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include "server_socket.hpp"
+# include "ServerSocket.hpp"
 # include "Config.hpp"
 # include "webserv.hpp"
 

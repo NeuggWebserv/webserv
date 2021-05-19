@@ -4,7 +4,7 @@
 
 #include "webserv.hpp"
 
-#include "response_header.hpp"
+#include "ResponseHeader.hpp"
 #include "Request.hpp"
 #include "ConfigRequest.hpp"
 #include "Cgi.hpp"

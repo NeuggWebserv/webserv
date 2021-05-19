@@ -1,4 +1,4 @@
-#include "server_socket.hpp"
+#include "ServerSocket.hpp"
 
 ServerSocket::ServerSocket(const t_listen& lstn) : lstn(lstn)
 {
@@ -16,7 +16,7 @@ ServerSocket::ServerSocket(const ServerSocket& copy)
 
 ServerSocket::~ServerSocket()
 {
-    
+    /* Nothing allocated dynamically */
 }
 
 const ServerSocket& ServerSocket::operator=(const ServerSocket& obj)
@@ -31,7 +31,6 @@ const ServerSocket& ServerSocket::operator=(const ServerSocket& obj)
 void ServerSocket::setup()
 {
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
-    // std::cout << "server_fd in server socket : " << server_fd << std::endl;
     if (server_fd < 0)
         throw std::logic_error("Error setup: Cannot create socket");
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
@@ -119,7 +118,7 @@ int ServerSocket::recv(int client_fd)
 
 void ServerSocket::do_request(int client_fd, const Config& config)
 {
-	ConfigRequest	requestConf;
+	ConfigRequest	request_conf;
 	Response		response;
 	std::string		recvd = "";
 
@@ -133,9 +132,9 @@ void ServerSocket::do_request(int client_fd, const Config& config)
 		if (request.get_ret() != 200)
 			request.set_method("GET");
 
-		requestConf = config.get_config_for_request(this->lstn,  request.get_path(), request.get_headers().at("Host"), request.get_method(), request);
+		request_conf = config.get_config_for_request(this->lstn,  request.get_path(), request.get_headers().at("Host"), request.get_method(), request);
 
-		response.call(request, requestConf);
+		response.call(request, request_conf);
 
 		client_msg_mapping.erase(client_fd);
 		client_msg_mapping.insert(std::make_pair(client_fd, response.get_response()));
