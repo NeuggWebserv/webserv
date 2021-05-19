@@ -160,8 +160,8 @@ void										ConfigRequest::set_content_location(const std::string& src)
 }
 void										ConfigRequest::set_host_port(const t_listen hostport)
 {
-	this->host_port.port = host_port.port;
-	this->host_port.host = host_port.host;
+	this->host_port.port = hostport.port;
+	this->host_port.host = hostport.host;
 }
 
 
