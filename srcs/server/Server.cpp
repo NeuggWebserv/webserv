@@ -110,6 +110,7 @@ void Server::run(void)
                     ret = it->second->recv(client_fd);
                     if (ret == 0)
                     {
+						printf("complete receiving request\n");
                         it->second->do_request(client_fd, config);
                         ready_to_send.push_back(client_fd);
                     }

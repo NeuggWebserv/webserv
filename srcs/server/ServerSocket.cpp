@@ -78,8 +78,10 @@ int ServerSocket::send(int client_fd)
 
 int ServerSocket::recv(int client_fd)
 {
-    int ret = ::recv(client_fd, recv_buffer, PACKET_SIZE - 1, 0);
-
+    char recv_buffer[PACKET_SIZE] = {0};
+    int ret;
+	
+	ret = ::recv(client_fd, recv_buffer, PACKET_SIZE - 1, 0);
     if (ret > 0)
     {
         client_msg_mapping[client_fd] += std::string(recv_buffer);
