@@ -1,4 +1,4 @@
-TRACE /index_permission.html HTTP/1.1
+TRACE /trace/index_permission.html HTTP/1.1
 User-Agent: custom-client
 Host: weebserv
 Accept-Language: en-US

@@ -1,4 +1,4 @@
-OPTIONS /index_example.html HTTP/1.1
+OPTIONS /options/index_example.html HTTP/1.1
 User-Agent: custom-client
 Host: weebserv
 Accept-Language: en-US

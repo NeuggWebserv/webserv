@@ -1,4 +1,4 @@
-POST /index_permission.html HTTP/1.1
+POST /post/index_permission.html HTTP/1.1
 User-Agent: custom-client
 Host: weebserv
 Accept-Language: en-US
