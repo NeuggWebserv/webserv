@@ -2,7 +2,7 @@ NAME = webserv
 
 CC = clang++
 
-CFLAGS = -std=c++98
+CFLAGS = -Wall -Wextra -Werror -std=c++98
 
 INCLUDES = -I includes -I srcs/config -I srcs/server -I srcs/response -I srcs/request -I srcs/cgi -I srcs/autoindex
 
@@ -65,3 +65,4 @@ fclean: clean
 
 re: fclean all
 
+.PHONY: all clean fclean re
