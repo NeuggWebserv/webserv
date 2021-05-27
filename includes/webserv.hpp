@@ -41,7 +41,7 @@
 
 // Defines
 #ifndef PACKET_SIZE
-# define PACKET_SIZE 60000
+# define PACKET_SIZE 65536
 #endif
 
 // Typedef

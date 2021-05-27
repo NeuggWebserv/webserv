@@ -115,7 +115,9 @@ void	send(int port, std::string filename)
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serv_addr.sin_port = htons(port);
 
-
+	std::cout<<serv_addr.sin_family << std::endl <<
+		"sin_addr "<<serv_addr.sin_addr.s_addr << std::endl <<
+		"sin_port "<< serv_addr.sin_port << std::endl;
 	if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
 	{
 		std::cout << std::endl << RED << "< Connection failed >" << RESET << std::endl << std::endl;

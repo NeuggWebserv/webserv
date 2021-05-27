@@ -1,4 +1,4 @@
-GET /get/index_php.php?truc=machin&foo=bar&jean-michel=francis HTTP/1.1
+GET /get/index.php?truc=machin&foo=bar&jean-michel=francis HTTP/1.1
 User-Agent: custom-client
 Host: weebserv
 Accept-Language: en-US
